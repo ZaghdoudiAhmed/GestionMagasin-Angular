@@ -1,0 +1,35 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "factures": [
+    {
+      "id": 1,
+      "montantRemise": 100,
+      "montantFacture": 350,
+      "dateFacture": "12/12/2020",
+      "active": true
+    },
+    {
+      "id": 2,
+      "montantRemise": 55,
+      "montantFacture": 870,
+      "dateFacture": "11/03/2020",
+      "active": true
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
