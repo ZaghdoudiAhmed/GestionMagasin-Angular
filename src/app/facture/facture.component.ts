@@ -1,3 +1,4 @@
+import { FactureService } from './../services/facture.service';
 import { Facture } from './../models/Facture';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,7 +12,7 @@ export class FactureComponent implements OnInit {
   FormFacture: FormGroup;
   listFacture: Facture[];
 
-  constructor() {}
+  constructor(private sf: FactureService) {}
 
   ngOnInit(): void {
     //  this.FormFacture = new FormGroup({
@@ -19,5 +20,10 @@ export class FactureComponent implements OnInit {
     //   montantRemise: new FormControl('', [Validators.required]),
     //  dateFacture: new FormControl('', [Validators.required]),
     //  });
+
+    this.sf.getAllFacturesFormDb().subscribe((res) => {
+      this.listFacture = res;
+      console.log(this.listFacture);
+    });
   }
 }

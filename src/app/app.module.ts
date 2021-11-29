@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { NotfoundpageComponent } from './notfoundpage/notfoundpage.component';
 import { FactureComponent } from './facture/facture.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,13 +15,10 @@ import { FactureComponent } from './facture/facture.component';
     HomeComponent,
     HeaderComponent,
     NotfoundpageComponent,
-    FactureComponent
+    FactureComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

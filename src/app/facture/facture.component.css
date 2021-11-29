@@ -1,0 +1,10 @@
+.head {
+  background: #36304a;
+  height: 60px;
+  position: relative;
+  font-size: 18px;
+  color: aliceblue;
+}
+.table {
+  border-collapse: collapse;
+}

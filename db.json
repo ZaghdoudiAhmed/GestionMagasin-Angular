@@ -15,17 +15,24 @@
   ],
   "factures": [
     {
-      "id": 1,
+      "factureid": 1,
       "montantRemise": 100,
       "montantFacture": 350,
       "dateFacture": "12/12/2020",
       "active": true
     },
     {
-      "id": 2,
+      "factureid": 2,
       "montantRemise": 55,
       "montantFacture": 870,
       "dateFacture": "11/03/2020",
+      "active": true
+    },
+    {
+      "factureid": 3,
+      "montantRemise": 23,
+      "montantFacture": 1870,
+      "dateFacture": "01/04/2020",
       "active": true
     }
   ],

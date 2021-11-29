@@ -49,4 +49,31 @@
       </div>
     </div>
   </div>
+
+  <hr />
+  <br />
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead class="head">
+            <tr>
+              <th>Montant du facture</th>
+              <th>Remise</th>
+              <th>Date de facture</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let f of listFacture; let i = index">
+            <td>{{ f.montantFacture }}</td>
+            <td>{{ f.montantRemise }}</td>
+            <td>{{ f.dateFacture }}</td>
+            <td>
+              <span class="badge rounded-pill bg-success"> {{ f.active }}</span>
+            </td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
