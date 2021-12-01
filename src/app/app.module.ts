@@ -7,6 +7,8 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { NotfoundpageComponent } from './notfoundpage/notfoundpage.component';
 import { FactureComponent } from './facture/facture.component';
+import { ClientComponent } from './client/client.component';
+import { SingupComponent } from './singup/singup.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { FactureComponent } from './facture/facture.component';
     HomeComponent,
     HeaderComponent,
     NotfoundpageComponent,
-    FactureComponent
+    FactureComponent,
+    ClientComponent,
+    SingupComponent
   ],
   imports: [
     BrowserModule,
