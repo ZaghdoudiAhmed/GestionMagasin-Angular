@@ -14,5 +14,8 @@ export class FactureService {
 
   getAllFacturesFormDb(): Observable<Facture[]> {
     return this._http.get<Facture[]>('http://localhost:3000/factures');
+    //return this._http.get<Facture[]>(
+    //   'http://localhost:8082/SpringMVC/servlet/factures/retrieve-all-factures'
+    //  );
   }
 }

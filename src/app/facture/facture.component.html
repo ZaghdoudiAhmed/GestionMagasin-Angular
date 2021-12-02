@@ -1,79 +1,268 @@
-<div class="container">
-  <br />
-  <br />
-  <div class="row">
-    <div class="col-6">
-      <div class="card" style="width: 30rem">
-        <div class="card-body">
-          <h5 class="card-title">Facture Form</h5>
-          <hr />
-          <form>
-            <div class="form-floating mb-3">
-              <input type="number" class="form-control" id="floatingInput" />
-              <label for="floatingInput">Montant Facture</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="number" class="form-control" id="floatingPassword" />
-              <label for="floatingPassword">Remise</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="date" class="form-control" id="floatingInput" />
-              <label for="floatingInput">Date </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Suivant</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card" style="width: 35rem">
-        <div class="card-body">
-          <h5 class="card-title">Details Facture Form</h5>
-          <hr />
-          <form>
-            <div class="form-floating mb-3">
-              <input type="number" class="form-control" id="floatingInput" />
-              <label for="floatingInput">Quantité</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="number" class="form-control" id="floatingPassword" />
-              <label for="floatingPassword">Pourcentage Remise</label>
-            </div>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingInput" />
-              <label for="floatingInput">Prix Totale </label>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container-fluide">
+  <div class="row justify-content-evenly">
+    <div class="col-sm-8 card">
+      <div class="card-body table-responsive">
+        <div class="header">
+          <h2>Liste des factures</h2>
 
-  <hr />
-  <br />
-  <div class="row">
-    <div class="card">
-      <div class="card-body">
-        <table class="table table-bordered">
-          <thead class="head">
+          <div
+            class="btn-group"
+            ngbDropdown
+            role="group"
+            aria-label="Button group with nested dropdown"
+          >
+            <button class="exporter btn btn-outline-secondary" ngbDropdownToggle>
+              Exporter
+              <i class="bi bi-box-arrow-up"></i>
+            </button>
+            <div class="dropdown-menu" ngbDropdownMenu>
+              <button ngbDropdownItem>En CSV</button>
+              <button ngbDropdownItem>En Excel</button>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <table class="table">
+          <thead class="text-center">
             <tr>
-              <th>Montant du facture</th>
-              <th>Remise</th>
+              <th>Montant (dt)</th>
+              <th>Remise (dt)</th>
               <th>Date de facture</th>
               <th>Status</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody *ngFor="let f of listFacture; let i = index">
-            <td>{{ f.montantFacture }}</td>
-            <td>{{ f.montantRemise }}</td>
-            <td>{{ f.dateFacture }}</td>
-            <td>
-              <span class="badge rounded-pill bg-success"> {{ f.active }}</span>
-            </td>
+          <tbody
+            class="text-center"
+            *ngFor="let f of listFacture; let i = index"
+          >
+            <tr>
+              <th>{{ f.montantFacture }}</th>
+              <th>{{ f.montantRemise }}</th>
+              <th>{{ f.dateFacture }}</th>
+              <th>
+                <span
+                  *ngIf="f.active == true"
+                  class="badge rounded-pill bg-light text-dark"
+                >
+                  active
+                </span>
+              </th>
+              <th>
+                <button class="btn btn-outline-danger mx-2">
+                  <i class="bi bi-trash"> </i>
+                </button>
+
+                <button
+                  class="btn btn-outline-warning"
+                  (click)="openEdit(contentEdit)"
+                >
+                  <i class="bi bi-pencil-square"></i>
+                </button>
+              </th>
+            </tr>
           </tbody>
         </table>
+        <!-- <div class="d-flex justify-content-between p-2">
+          <ngb-pagination
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="refreshCountries()"
+          >
+          </ngb-pagination>
+
+          <select
+            class="custom-select"
+            style="width: auto"
+            [(ngModel)]="pageSize"
+            (ngModelChange)="refreshFactures()"
+          >
+            <option [value]="2">2 items per page</option>
+            <option [value]="4">4 items per page</option>
+            <option [value]="6">6 items per page</option>
+          </select>
+        </div> -->
       </div>
+    </div>
+
+    <div class="col-sm-3 card">
+      <div class="card-body">
+        <h5 class="card-title text-center">Ajouter une Facture</h5>
+        <hr />
+        <p class="card-text">
+          Vous pouvez ajouter une facture en cliquant sur le bouton en bas .
+        </p>
+        <button
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+          (click)="open(content)"
+        >
+          <i class="bi bi-plus"></i>
+          Ajouter
+        </button>
+
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              Ajouter une Facture
+              <i class="bi bi-file-earmark-text"></i>
+            </h4>
+            <button
+              type="button"
+              class="close btn btn-outline-danger"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form ngForm #f="ngForm">
+              <div class="form-floating mb-3">
+                <input
+                  type="number"
+                  name="montant"
+                  ngModel
+                  #montant="ngModel"
+                  required
+                  class="form-control"
+                />
+                <label for="floatingInput">Montant Facture</label>
+                <div *ngIf="montant.touched && montant.errors">
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="montant.errors.required"
+                  >
+                    Champ Obligatoire
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="number"
+                  name="remise"
+                  ngModel
+                  #remise="ngModel"
+                  required
+                  class="form-control"
+                  id="floatingPassword"
+                />
+                <label for="floatingPassword">Remise</label>
+                <div *ngIf="remise.touched && remise.errors">
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="remise.errors.required"
+                  >
+                    Champ Obligatoire
+                  </div>
+                </div>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="date"
+                  ngModel
+                  #date="ngModel"
+                  required
+                  class="form-control"
+                  id="floatingInput"
+                />
+                <label for="floatingInput">Date </label>
+                <div *ngIf="date.touched && date.errors">
+                  <div
+                    class="alert alert-danger"
+                    role="alert"
+                    *ngIf="date.errors.required"
+                  >
+                    Champ Obligatoire
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="submit"
+                  class="btn btn-outline-dark"
+                  (click)="modal.close('Save click')"
+                  [disabled]="f.invalid"
+                >
+                  Save
+                </button>
+              </div>
+            </form>
+
+            <!-- <div class="col-6">
+                <div class="card" style="width: 35rem">
+                  <div class="card-body">
+                    <h5 class="card-title">Details Facture Form</h5>
+                    <hr />
+                    <form>
+                      <div class="form-floating mb-3">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="floatingInput"
+                        />
+                        <label for="floatingInput">Quantité</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="floatingPassword"
+                        />
+                        <label for="floatingPassword">Pourcentage Remise</label>
+                      </div>
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="floatingInput"
+                        />
+                        <label for="floatingInput">Prix Totale </label>
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        Submit
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div> -->
+          </div>
+        </ng-template>
+
+        <ng-template #contentEdit let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">
+              Modifier une Facture
+              <i class="bi bi-pencil-square"></i>
+            </h4>
+            <button
+              type="button "
+              class="close btn btn-outline-danger"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form></form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-dark"
+              (click)="modal.close('Save click')"
+            >
+              Save
+            </button>
+          </div>
+        </ng-template>
+      </div>
+      <div class="row"></div>
     </div>
   </div>
 </div>

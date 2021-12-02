@@ -1,10 +1,11 @@
-.head {
-  background: #36304a;
-  height: 60px;
-  position: relative;
-  font-size: 18px;
-  color: aliceblue;
+.row {
+  padding-top: 2rem;
 }
-.table {
-  border-collapse: collapse;
+/* .btn {
+  position: relative;
+  left: 100px;
+} */
+.header {
+  display: flex;
+  justify-content: space-between;
 }
