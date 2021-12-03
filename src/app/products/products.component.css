@@ -1,0 +1,37 @@
+.button {
+  padding :7px;
+  text-decoration: none;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  overflow:hidden;
+  width: auto;
+  max-width: 32px; /** I'm animating max-width because width needs to be auto, and auto can't be animated **/
+  -webkit-transition: max-width 0.5s;
+  transition: max-width 0.5s;
+}
+
+.button:hover {
+  max-width: 300px;
+}
+
+.icon {
+  font-family: "Font Awesome 5 Free";
+  font-size: 16px;
+  margin-right: 15px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  white-space: nowrap;
+  padding-right: 15px;
+}
+.alert{
+  margin : 2px 0;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
+}

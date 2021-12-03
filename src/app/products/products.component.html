@@ -1,0 +1,204 @@
+<div class="header">
+  <h2>Product management</h2>
+  <form>
+    <input class="form-control" type="text" placeholder="Search">
+  </form>
+</div>
+<div class="row">
+  <div class="col-md-{{width}}" >
+     <div class="card">
+        <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Code</th>
+        <th scope="col">Libelle</th>
+        <th scope="col">Prix Unitaire</th>
+        <th scope="col">Detail</th>
+        <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of list; let i=index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{p.codeProduit}}</td>
+        <td>{{p.libelleProduit}}</td>
+        <td>{{p.prixUnitaire}}</td>
+        <td>
+          <button class="btn btn-sm btn-info" *ngIf="p.detailproduit.categorieProduit=='quincaillerie'"(click)="resize(p)" title="info detail">
+              {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
+            </button>
+            <button class="btn btn-sm btn-warning" *ngIf="p.detailproduit.categorieProduit=='alimentaire'"(click)="resize(p)" title="info detail">
+              {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
+            </button>
+            <button class="btn btn-sm btn-success" *ngIf="p.detailproduit.categorieProduit=='electromenager'" (click)="resize(p)" title="info detail">
+              {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
+            </button>
+        </td>
+        <td>
+          <button class="button btn btn-outline-warning mx-1" (click)="setProductToDelete(p,i);open(UpdateContent)"><i class="bi bi-gear-fill"></i></button>
+          <button class="button btn btn-outline-danger mx-1" (click)="setProductToDelete(p,i); open(confirm)"><i class="bi bi-x-circle"></i></button>
+        </td>
+      </tr>
+
+      </tbody>
+    </table>
+     </div>
+  </div>
+  <div class="col-md-4" *ngIf="width===8">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between">
+        <p class="text-capitalize font-weight-bold" style="padding:6px 0; margin: 0 ">{{product.libelleProduit}}</p>
+        <button type="button" class="btn close"  aria-label="Close" (click)="width=12">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Detail produit</h5>
+        <p class="card-text"><b>Created at :</b> {{product.detailproduit.dateCreation}}</p>
+        <p class="card-text"><b>Edited at :</b> {{product.detailproduit.dateDerniereModification}}</p>
+        <p class="card-text"><b>Categorie : </b>{{product.detailproduit.categorieProduit}}</p>
+        <a [routerLink]="['/product-details']" class="btn btn-primary">All product details</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- add product modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add product</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngForm #f1="ngForm">
+      <div class="form-group">
+        <label for="code">Code</label>
+        <div class="input-group">
+          <input [(ngModel)]="product.codeProduit" id="code" type="text" class="form-control" placeholder="Code Produit" name="cp" ngModel #cp="ngModel" required minlength="3">
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="cp.touched && cp.errors">
+          <div *ngIf="cp.errors.required">Ce champ est obligatoire</div>
+          <div *ngIf="cp.errors.minlength"> Le code doit contenir au moins 3 caractères </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lib">Libelle</label>
+        <div class="input-group">
+          <input [(ngModel)]="product.libelleProduit" id="lib" type="text" class="form-control" placeholder="libelle produit" name="lib" ngModel #lib="ngModel" required>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="lib.touched && lib.errors">
+          <div *ngIf="cp.errors.required"> Ce champ est obligatoire</div>
+          <div *ngIf="lib.errors.minlength"> Le libelle doit contenir au moins 3 caractères </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="prix">prix</label>
+        <div class="input-group">
+          <input [(ngModel)]="product.prixUnitaire" id="prix" type="text" class="form-control" placeholder="prix unitaire" name="prix" ngModel #prix="ngModel" required pattern="[0-9]*">
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="prix.touched && prix.errors">
+          <div *ngIf="prix.errors.required">Ce champ est obligatoire </div>
+          <div *ngIf="prix.errors.pattern">Prix doix contenir [0..9]</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="detail">Code</label>
+        <div class="input-group">
+          <input id="detail" type="text" class="form-control" placeholder="Detail produit" name="dp" ngModel #dp="ngModel" required>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="dp.touched && dp.invalid">
+          Ce champ est obligatoire
+        </div>
+      </div>
+    <div class="modal-footer">
+      <input type="submit" (click)="save();modal.close('close')" class="btn btn-outline-primary" value="Add Product" data-dismiss="createLabel" *ngIf="f1.valid">
+      <input type="submit" class="btn btn-outline-danger" value="Form invalid" *ngIf="f1.invalid" disabled>
+    </div>
+    </form>
+  </div>
+
+</ng-template>
+<!-- edit product modal -->
+<ng-template #UpdateContent let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-edit">Edit product</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngForm #f1="ngForm">
+      <div class="form-group">
+        <label for="code">Code</label>
+        <div class="input-group">
+          <input [(ngModel)]="productToDelete.codeProduit" value="{{productToDelete.codeProduit}}" id="codeE" type="text" class="form-control" name="cp" ngModel #cp="ngModel" required minlength="3">
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="cp.touched && cp.errors">
+          <div *ngIf="cp.errors.required">Ce champ est obligatoire</div>
+          <div *ngIf="cp.errors.minlength"> Le code doit contenir au moins 3 caractères </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lib">Libelle</label>
+        <div class="input-group">
+          <input [(ngModel)]="productToDelete.libelleProduit" value="{{productToDelete.libelleProduit}}" id="libE" type="text" class="form-control" name="lib" ngModel #lib="ngModel" required>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="lib.touched && lib.errors">
+          <div *ngIf="cp.errors.required"> Ce champ est obligatoire</div>
+          <div *ngIf="lib.errors.minlength"> Le libelle doit contenir au moins 3 caractères </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="prix">prix</label>
+        <div class="input-group">
+          <input [(ngModel)]="productToDelete.prixUnitaire" value="{{productToDelete.prixUnitaire}}" id="prixE" type="text" class="form-control" name="prix" ngModel #prix="ngModel" required pattern="[0-9]*" >
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="prix.touched && prix.errors">
+          <div *ngIf="prix.errors.required">Ce champ est obligatoire </div>
+          <div *ngIf="prix.errors.pattern">Prix doix contenir [0..9]</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="detail">Code</label>
+        <div class="input-group">
+          <input id="detailE" type="text" class="form-control" placeholder="Detail produit" name="dp" ngModel #dp="ngModel" required>
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="dp.touched && dp.invalid">
+          Ce champ est obligatoire
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" (click)="update();modal.close('close')" class="btn btn-outline-primary" value="Edit Product" data-dismiss="createLabel" *ngIf="f1.valid">
+        <input type="submit" class="btn btn-outline-danger" value="Form invalid" *ngIf="f1.invalid" disabled>
+      </div>
+    </form>
+  </div>
+
+</ng-template>
+<ng-template #confirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title1">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+   <p>are you sure you want to permanently delete this product</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('close')">Cancel</button>
+    <button type="button" class="btn btn-outline-danger" (click)="deleteProduct(productToDelete) ;modal.close('Save click')">Delete</button>
+  </div>
+</ng-template>
+
+<button class="button btn btn-outline-primary my-3" (click)="open(content)">
+  <span class="icon"><i class="bi bi-plus-circle"></i></span>
+  <span class="text">Add Product</span>
+</button>
+
+

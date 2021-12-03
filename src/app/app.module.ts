@@ -7,6 +7,10 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { NotfoundpageComponent } from './notfoundpage/notfoundpage.component';
 import { FactureComponent } from './facture/facture.component';
+import { ProductsComponent } from './products/products.component';
+import{ HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
+import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 
 @NgModule({
   declarations: [
@@ -14,11 +18,15 @@ import { FactureComponent } from './facture/facture.component';
     HomeComponent,
     HeaderComponent,
     NotfoundpageComponent,
-    FactureComponent
+    FactureComponent,
+    ProductsComponent,
+    DetailProduitComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

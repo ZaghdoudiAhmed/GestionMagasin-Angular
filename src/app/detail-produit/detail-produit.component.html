@@ -1,0 +1,25 @@
+<div class="header">
+<h2>Product-Detail management</h2>
+<button class="btn btn-md btn-light" (click)="sortDP()">Sort</button>
+</div>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Created at</th>
+    <th scope="col">Updated At</th>
+    <th scope="col">Categorie</th>
+    <th scope="col">Product</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let d of list; let i=index">
+    <th scope="row">{{i+1}}</th>
+    <td>{{d.dateCreation}}</td>
+    <td>{{d.dateDerniereModification}}</td>
+    <td>{{d.categorieProduit}}</td>
+  <!--<td>{{getProduct(d.idDetailProduit).libelleProduit}}</td>-->
+  </tr>
+  </tbody>
+</table>
+

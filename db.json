@@ -31,5 +31,11 @@
   ],
   "profile": {
     "name": "typicode"
-  }
+  },
+  "produits":{
+      "id_produit" : 1,
+      "codeProduit":"",
+      "libelleProduit":"test",
+      "prixUnitaire":1
+    }
 }
