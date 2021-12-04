@@ -91,13 +91,13 @@ export class FactureComponent implements OnInit {
     let csv = data.map((row) =>
       header
         .map((fieldName) => JSON.stringify(row[fieldName], replacer))
-        .join(',')
+        .join('              ')
     );
-    csv.unshift(header.join(','));
+    csv.unshift(header.join('   '));
     let csvArray = csv.join('\r\n');
 
     var blob = new Blob([csvArray], { type: 'text/csv' });
-    saveAs(blob, 'myFile.csv');
+    saveAs(blob, 'factures_data.csv');
   }
 
   exportAsXLSX(): void {
