@@ -1,3 +1,4 @@
+import { ExcelService } from './services/excel.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -31,7 +32,7 @@ import { FooterComponent } from './footer/footer.component'; // <== add the impo
     FormsModule, // <========== Add this line!
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [ExcelService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

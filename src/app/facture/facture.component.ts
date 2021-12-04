@@ -1,3 +1,4 @@
+import { ExcelService } from './../services/excel.service';
 import { FactureService } from './../services/facture.service';
 import { Facture } from './../models/Facture';
 import { Component, OnInit, Input } from '@angular/core';
@@ -22,7 +23,11 @@ export class FactureComponent implements OnInit {
   myForm: FormGroup;
   @Input() factureToEdit: Facture;
 
-  constructor(private sf: FactureService, private modalService: NgbModal) {
+  constructor(
+    private sf: FactureService,
+    private es: ExcelService,
+    private modalService: NgbModal
+  ) {
     // this.refreshFactures();
   }
 
@@ -93,5 +98,9 @@ export class FactureComponent implements OnInit {
 
     var blob = new Blob([csvArray], { type: 'text/csv' });
     saveAs(blob, 'myFile.csv');
+  }
+
+  exportAsXLSX(): void {
+    this.es.exportAsExcelFile(this.listFacture, 'factures_data');
   }
 }
