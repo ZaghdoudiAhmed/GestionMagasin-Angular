@@ -10,7 +10,8 @@ import { FactureComponent } from './facture/facture.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EditFactureComponent } from './edit-facture/edit-facture.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // <== add the imports!
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FooterComponent } from './footer/footer.component'; // <== add the imports!
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // <== add th
     NotfoundpageComponent,
     FactureComponent,
     EditFactureComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

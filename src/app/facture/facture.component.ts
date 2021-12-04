@@ -1,8 +1,10 @@
 import { FactureService } from './../services/facture.service';
 import { Facture } from './../models/Facture';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-facture',
@@ -16,17 +18,15 @@ export class FactureComponent implements OnInit {
   closeResult = '';
   // page = 1;
   // pageSize = 4;
-  // collectionSize = this.listFacture.length;
+  // collectionSize = Facture.length;
+  myForm: FormGroup;
+  @Input() factureToEdit: Facture;
 
-  constructor(private sf: FactureService, private modalService: NgbModal) {}
+  constructor(private sf: FactureService, private modalService: NgbModal) {
+    // this.refreshFactures();
+  }
 
   ngOnInit(): void {
-    //  this.FormFacture = new FormGroup({
-    //    montantFacture: new FormControl('', [Validators.required]),
-    //   montantRemise: new FormControl('', [Validators.required]),
-    //  dateFacture: new FormControl('', [Validators.required]),
-    //  });
-
     this.sf.getAllFacturesFormDb().subscribe((res) => {
       this.listFacture = res;
       console.log(this.listFacture);
@@ -79,4 +79,19 @@ export class FactureComponent implements OnInit {
   //       (this.page - 1) * this.pageSize + this.pageSize
   //     );
   // }
+
+  downloadFile(data: any) {
+    const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
+    const header = Object.keys(data[0]);
+    let csv = data.map((row) =>
+      header
+        .map((fieldName) => JSON.stringify(row[fieldName], replacer))
+        .join(',')
+    );
+    csv.unshift(header.join(','));
+    let csvArray = csv.join('\r\n');
+
+    var blob = new Blob([csvArray], { type: 'text/csv' });
+    saveAs(blob, 'myFile.csv');
+  }
 }

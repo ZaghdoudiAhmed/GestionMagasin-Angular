@@ -1,6 +1,6 @@
 <div class="container-fluide">
   <div class="row justify-content-evenly">
-    <div class="col-sm-8 card">
+    <div class="col-sm-12 card">
       <div class="card-body table-responsive">
         <div class="header">
           <h2>Liste des factures</h2>
@@ -11,12 +11,17 @@
             role="group"
             aria-label="Button group with nested dropdown"
           >
-            <button class="exporter btn btn-outline-secondary" ngbDropdownToggle>
+            <button
+              class="exporter btn btn-outline-secondary"
+              ngbDropdownToggle
+            >
               Exporter
               <i class="bi bi-box-arrow-up"></i>
             </button>
             <div class="dropdown-menu" ngbDropdownMenu>
-              <button ngbDropdownItem>En CSV</button>
+              <button ngbDropdownItem (click)="downloadFile(listFacture)">
+                En CSV
+              </button>
               <button ngbDropdownItem>En Excel</button>
             </div>
           </div>
@@ -29,6 +34,7 @@
               <th>Remise (dt)</th>
               <th>Date de facture</th>
               <th>Status</th>
+              <th>Details</th>
               <th></th>
             </tr>
           </thead>
@@ -39,7 +45,7 @@
             <tr>
               <th>{{ f.montantFacture }}</th>
               <th>{{ f.montantRemise }}</th>
-              <th>{{ f.dateFacture }}</th>
+              <th>{{ f.dateFacture | date: "dd-MM-yyyy" }}</th>
               <th>
                 <span
                   *ngIf="f.active == true"
@@ -48,14 +54,18 @@
                   active
                 </span>
               </th>
+              <th></th>
               <th>
-                <button class="btn btn-outline-danger mx-2">
+                <button
+                  class="btn btn-outline-danger mx-2"
+                  (click)="open(contentConfirme)"
+                >
                   <i class="bi bi-trash"> </i>
                 </button>
 
                 <button
                   class="btn btn-outline-warning"
-                  (click)="openEdit(contentEdit)"
+                  (click)="open(contentEdit)"
                 >
                   <i class="bi bi-pencil-square"></i>
                 </button>
@@ -63,6 +73,7 @@
             </tr>
           </tbody>
         </table>
+
         <!-- <div class="d-flex justify-content-between p-2">
           <ngb-pagination
             [collectionSize]="collectionSize"
@@ -86,114 +97,97 @@
       </div>
     </div>
 
-    <div class="col-sm-3 card">
-      <div class="card-body">
-        <h5 class="card-title text-center">Ajouter une Facture</h5>
-        <hr />
-        <p class="card-text">
-          Vous pouvez ajouter une facture en cliquant sur le bouton en bas .
-        </p>
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+          Ajouter une Facture
+          <i class="bi bi-file-earmark-text"></i>
+        </h4>
         <button
-          class="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-          (click)="open(content)"
+          type="button"
+          class="close btn btn-outline-danger"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
         >
-          <i class="bi bi-plus"></i>
-          Ajouter
+          <span aria-hidden="true">&times;</span>
         </button>
-
-        <ng-template #content let-modal>
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">
-              Ajouter une Facture
-              <i class="bi bi-file-earmark-text"></i>
-            </h4>
+      </div>
+      <div class="modal-body">
+        <form ngForm #f="ngForm">
+          <div class="form-floating mb-3">
+            <input
+              type="number"
+              name="montant"
+              ngModel
+              #montant="ngModel"
+              required
+              class="form-control"
+            />
+            <label for="floatingInput">Montant Facture</label>
+            <div *ngIf="montant.touched && montant.errors">
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="montant.errors.required"
+              >
+                Champ Obligatoire
+              </div>
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="number"
+              name="remise"
+              ngModel
+              #remise="ngModel"
+              required
+              class="form-control"
+              id="floatingPassword"
+            />
+            <label for="floatingPassword">Remise</label>
+            <div *ngIf="remise.touched && remise.errors">
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="remise.errors.required"
+              >
+                Champ Obligatoire
+              </div>
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="date"
+              ngModel
+              #date="ngModel"
+              required
+              class="form-control"
+              id="floatingInput"
+            />
+            <label for="floatingInput">Date </label>
+            <div *ngIf="date.touched && date.errors">
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="date.errors.required"
+              >
+                Champ Obligatoire
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
             <button
-              type="button"
-              class="close btn btn-outline-danger"
-              aria-label="Close"
-              (click)="modal.dismiss('Cross click')"
+              type="submit"
+              class="btn btn-outline-dark"
+              (click)="modal.close('Save click')"
+              [disabled]="f.invalid"
             >
-              <span aria-hidden="true">&times;</span>
+              Save
             </button>
           </div>
-          <div class="modal-body">
-            <form ngForm #f="ngForm">
-              <div class="form-floating mb-3">
-                <input
-                  type="number"
-                  name="montant"
-                  ngModel
-                  #montant="ngModel"
-                  required
-                  class="form-control"
-                />
-                <label for="floatingInput">Montant Facture</label>
-                <div *ngIf="montant.touched && montant.errors">
-                  <div
-                    class="alert alert-danger"
-                    role="alert"
-                    *ngIf="montant.errors.required"
-                  >
-                    Champ Obligatoire
-                  </div>
-                </div>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="number"
-                  name="remise"
-                  ngModel
-                  #remise="ngModel"
-                  required
-                  class="form-control"
-                  id="floatingPassword"
-                />
-                <label for="floatingPassword">Remise</label>
-                <div *ngIf="remise.touched && remise.errors">
-                  <div
-                    class="alert alert-danger"
-                    role="alert"
-                    *ngIf="remise.errors.required"
-                  >
-                    Champ Obligatoire
-                  </div>
-                </div>
-              </div>
-              <div class="form-floating mb-3">
-                <input
-                  type="date"
-                  ngModel
-                  #date="ngModel"
-                  required
-                  class="form-control"
-                  id="floatingInput"
-                />
-                <label for="floatingInput">Date </label>
-                <div *ngIf="date.touched && date.errors">
-                  <div
-                    class="alert alert-danger"
-                    role="alert"
-                    *ngIf="date.errors.required"
-                  >
-                    Champ Obligatoire
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="submit"
-                  class="btn btn-outline-dark"
-                  (click)="modal.close('Save click')"
-                  [disabled]="f.invalid"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
+        </form>
 
-            <!-- <div class="col-6">
+        <!-- <div class="col-6">
                 <div class="card" style="width: 35rem">
                   <div class="card-body">
                     <h5 class="card-title">Details Facture Form</h5>
@@ -230,39 +224,170 @@
                   </div>
                 </div>
               </div> -->
-          </div>
-        </ng-template>
+      </div>
+    </ng-template>
 
-        <ng-template #contentEdit let-modal>
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">
-              Modifier une Facture
-              <i class="bi bi-pencil-square"></i>
-            </h4>
-            <button
-              type="button "
-              class="close btn btn-outline-danger"
-              aria-label="Close"
-              (click)="modal.dismiss('Cross click')"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+    <ng-template #contentEdit let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">
+          Modifier une Facture
+          <i class="bi bi-file-earmark-text"></i>
+        </h4>
+        <button
+          type="button"
+          class="close btn btn-outline-danger"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form ngForm #f="ngForm">
+          <div class="form-floating mb-3">
+            <input
+              type="number"
+              name="montant"
+              ngModel
+              #montant="ngModel"
+              required
+              class="form-control"
+            />
+            <label for="floatingInput">Montant Facture</label>
+            <div *ngIf="montant.touched && montant.errors">
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="montant.errors.required"
+              >
+                Champ Obligatoire
+              </div>
+            </div>
           </div>
-          <div class="modal-body">
-            <form></form>
+          <div class="form-floating mb-3">
+            <input
+              type="number"
+              name="remise"
+              ngModel
+              #remise="ngModel"
+              required
+              class="form-control"
+              id="floatingPassword"
+            />
+            <label for="floatingPassword">Remise</label>
+            <div *ngIf="remise.touched && remise.errors">
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="remise.errors.required"
+              >
+                Champ Obligatoire
+              </div>
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="date"
+              ngModel
+              #date="ngModel"
+              required
+              class="form-control"
+              id="floatingInput"
+            />
+            <label for="floatingInput">Date </label>
+            <div *ngIf="date.touched && date.errors">
+              <div
+                class="alert alert-danger"
+                role="alert"
+                *ngIf="date.errors.required"
+              >
+                Champ Obligatoire
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button
-              type="button"
+              type="submit"
               class="btn btn-outline-dark"
               (click)="modal.close('Save click')"
+              [disabled]="f.invalid"
             >
               Save
             </button>
           </div>
-        </ng-template>
+        </form>
       </div>
-      <div class="row"></div>
+    </ng-template>
+
+    <ng-template #contentConfirme let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title1">
+          Supprimer le facture
+        </h4>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Vous voulez vraiment supprimer cette facture ?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="modal.close('close')"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="modal.close('Save click')"
+        >
+          Delete
+        </button>
+      </div>
+    </ng-template>
+    <div class="row justify-content-evenly">
+      <div class="col-sm-5 card">
+        <div class="card-body">
+          <div class="header">
+            <h3 class="card-title text-center">Ajouter une Facture</h3>
+            <i
+              class="bi bi-file-earmark-plus-fill"
+              style="font-size: 1.5em"
+            ></i>
+          </div>
+
+          <hr />
+          <p class="card-text">
+            Vous pouvez ajouter une facture en cliquant sur le bouton en bas .
+          </p>
+          <button
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+            (click)="open(content)"
+          >
+            <i class="bi bi-plus"></i>
+            Ajouter une facture
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-5 card">
+        <div class="card-body">
+          <h5 class="card-title text-center">Ajouter une Facture</h5>
+          <hr />
+          <p class="card-text">
+            Vous pouvez ajouter une facture en cliquant sur le bouton en bas .
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,10 +1,6 @@
 .row {
   padding-top: 2rem;
 }
-/* .btn {
-  position: relative;
-  left: 100px;
-} */
 .header {
   display: flex;
   justify-content: space-between;

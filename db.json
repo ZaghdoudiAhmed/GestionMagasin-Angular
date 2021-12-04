@@ -34,6 +34,20 @@
       "montantFacture": 1870,
       "dateFacture": "01/04/2020",
       "active": true
+    },
+    {
+      "factureid": 4,
+      "montantRemise": 213,
+      "montantFacture": 1670,
+      "dateFacture": "12/01/2020",
+      "active": false
+    },
+    {
+      "factureid": 5,
+      "montantRemise": 13,
+      "montantFacture": 870,
+      "dateFacture": "10/10/2020",
+      "active": true
     }
   ],
   "profile": {
