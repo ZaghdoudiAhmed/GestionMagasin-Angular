@@ -14,12 +14,12 @@ import { saveAs } from 'file-saver';
 })
 export class FactureComponent implements OnInit {
   FormFacture: FormGroup;
-  listFacture: Facture[];
+  listFacture: Facture[] = [];
   show: Boolean = false;
+  p: number = 1;
+
   closeResult = '';
-  // page = 1;
-  // pageSize = 4;
-  // collectionSize = Facture.length;
+
   myForm: FormGroup;
   @Input() factureToEdit: Facture;
 
@@ -27,9 +27,7 @@ export class FactureComponent implements OnInit {
     private sf: FactureService,
     private es: ExcelService,
     private modalService: NgbModal
-  ) {
-    // this.refreshFactures();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.sf.getAllFacturesFormDb().subscribe((res) => {
@@ -38,6 +36,7 @@ export class FactureComponent implements OnInit {
     });
   }
 
+  // Model Ajouter //
   open(content) {
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
@@ -51,6 +50,7 @@ export class FactureComponent implements OnInit {
       );
   }
 
+  // Model Modifier //
   openEdit(content) {
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
@@ -73,18 +73,8 @@ export class FactureComponent implements OnInit {
       return `with: ${reason}`;
     }
   }
-  // refreshFactures() {
-  //   this.listFacture = this.listFacture
-  //     .map((facture, i) => ({
-  //       id: i + 1,
-  //       ...facture,
-  //     }))
-  //     .slice(
-  //       (this.page - 1) * this.pageSize,
-  //       (this.page - 1) * this.pageSize + this.pageSize
-  //     );
-  // }
 
+  // Exportation CSV //
   downloadFile(data: any) {
     const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
     const header = Object.keys(data[0]);
@@ -99,7 +89,7 @@ export class FactureComponent implements OnInit {
     var blob = new Blob([csvArray], { type: 'text/csv' });
     saveAs(blob, 'factures_data.csv');
   }
-
+  // Exportation EXCEL //
   exportAsXLSX(): void {
     this.es.exportAsExcelFile(this.listFacture, 'factures_data');
   }

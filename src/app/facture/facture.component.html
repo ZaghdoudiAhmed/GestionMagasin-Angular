@@ -38,11 +38,13 @@
               <th></th>
             </tr>
           </thead>
-          <tbody
-            class="text-center"
-            *ngFor="let f of listFacture; let i = index"
-          >
-            <tr>
+          <tbody class="text-center">
+            <tr
+              *ngFor="
+                let f of listFacture
+                  | paginate: { itemsPerPage: 3, currentPage: p }
+              "
+            >
               <th>{{ f.montantFacture }}</th>
               <th>{{ f.montantRemise }}</th>
               <th>{{ f.dateFacture | date: "dd-MM-yyyy" }}</th>
@@ -72,28 +74,8 @@
               </th>
             </tr>
           </tbody>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
         </table>
-
-        <!-- <div class="d-flex justify-content-between p-2">
-          <ngb-pagination
-            [collectionSize]="collectionSize"
-            [(page)]="page"
-            [pageSize]="pageSize"
-            (pageChange)="refreshCountries()"
-          >
-          </ngb-pagination>
-
-          <select
-            class="custom-select"
-            style="width: auto"
-            [(ngModel)]="pageSize"
-            (ngModelChange)="refreshFactures()"
-          >
-            <option [value]="2">2 items per page</option>
-            <option [value]="4">4 items per page</option>
-            <option [value]="6">6 items per page</option>
-          </select>
-        </div> -->
       </div>
     </div>
 
@@ -381,11 +363,39 @@
       </div>
       <div class="col-sm-5 card">
         <div class="card-body">
-          <h5 class="card-title text-center">Ajouter une Facture</h5>
-          <hr />
-          <p class="card-text">
-            Vous pouvez ajouter une facture en cliquant sur le bouton en bas .
-          </p>
+          <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+            <ngb-panel title="Simple">
+              <ng-template ngbPanelContent>
+                Anim pariatur cliche reprehenderit, enim eiusmod high life
+                accusamus terry richardson ad squid. 3 wolf moon officia aute,
+                non cupidatat skateboard dolor brunch. Food truck quinoa
+                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
+                put a bird on it squid single-origin coffee nulla assumenda
+                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
+                wes anderson cred nesciunt sapiente ea proident. Ad vegan
+                excepteur butcher vice lomo. Leggings occaecat craft beer
+                farm-to-table, raw denim aesthetic synth nesciunt you probably
+                haven't heard of them accusamus labore sustainable VHS.
+              </ng-template>
+            </ngb-panel>
+            <ngb-panel>
+              <ng-template ngbPanelTitle>
+                <span>&#9733; <b>Fancy</b> title &#9733;</span>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                Anim pariatur cliche reprehenderit, enim eiusmod high life
+                accusamus terry richardson ad squid. 3 wolf moon officia aute,
+                non cupidatat skateboard dolor brunch. Food truck quinoa
+                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
+                put a bird on it squid single-origin coffee nulla assumenda
+                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
+                wes anderson cred nesciunt sapiente ea proident. Ad vegan
+                excepteur butcher vice lomo. Leggings occaecat craft beer
+                farm-to-table, raw denim aesthetic synth nesciunt you probably
+                haven't heard of them accusamus labore sustainable VHS.
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
         </div>
       </div>
     </div>

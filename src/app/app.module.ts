@@ -13,6 +13,7 @@ import { EditFactureComponent } from './edit-facture/edit-facture.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component'; // <== add the imports!
+import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FooterComponent } from './footer/footer.component'; // <== add the impo
     NgbModule,
     FormsModule, // <========== Add this line!
     ReactiveFormsModule,
+    NgxPaginationModule, // <------- Module pagination
   ],
   providers: [ExcelService],
   bootstrap: [AppComponent],
