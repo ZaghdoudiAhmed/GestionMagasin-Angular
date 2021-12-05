@@ -14,8 +14,27 @@
         <th scope="col">Code</th>
         <th scope="col">Libelle</th>
         <th scope="col">Prix Unitaire</th>
-        <th scope="col">Detail</th>
-        <th scope="col">Action</th>
+        <th scope="col">
+          <div ngbDropdown class="d-inline-block">
+            <p id="dropdownBasic1" style="margin: 0; cursor: pointer;" ngbDropdownToggle>Categorie</p>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem (click)="ngOnInit()">All</button>
+              <button ngbDropdownItem (click)="getByCat('alimentaire')">Alimentaire</button>
+              <button ngbDropdownItem (click)="getByCat('electromenager')" >Electromenager</button>
+              <button ngbDropdownItem (click)="getByCat('quincaillerie')">Quincaillerie</button>
+            </div>
+          </div>
+        </th>
+        <th scope="col">
+          <div ngbDropdown class="d-inline-block">
+            <p id="dropdownBasic1" style="margin: 0; cursor: pointer;" ngbDropdownToggle>Action</p>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem (click)="ngOnInit()">All</button>
+              <button ngbDropdownItem (click)="sortByNewest()">Sort By Newest</button>
+              <button ngbDropdownItem (click)="getByCat('electromenager')" >Electromenager</button>
+            </div>
+          </div>
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -48,7 +67,12 @@
   <div class="col-md-4" *ngIf="width===8">
     <div class="card">
       <div class="card-header d-flex justify-content-between">
-        <p class="text-capitalize font-weight-bold" style="padding:6px 0; margin: 0 ">{{product.libelleProduit}}</p>
+        <p class="text-capitalize font-weight-bold" style="padding:6px 0; margin: 0 ">
+          {{product.libelleProduit}}&nbsp;&nbsp;
+          <button class="btn btn-sm btn-outline-warning" (click)="open(updateDPmodal)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+        </p>
         <button type="button" class="btn close"  aria-label="Close" (click)="width=12">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -107,11 +131,17 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="detail">Code</label>
+        <label for="cat">Select Categorie</label>
         <div class="input-group">
-          <input id="detail" type="text" class="form-control" placeholder="Detail produit" name="dp" ngModel #dp="ngModel" required>
+          <div class="input-group">
+          <select [(ngModel)]="product.detailproduit.categorieProduit" name="cat" id="cat" ngModel #cat="ngModel" required>
+            <option value="electromenager">Electromenager</option>
+            <option value="alimentaire">Alimentaire</option>
+            <option value="quincaillerie">Quincaillerie</option>
+          </select>
+          </div>
         </div>
-        <div class="alert alert-danger" role="alert" *ngIf="dp.touched && dp.invalid">
+        <div class="alert alert-danger" role="alert" *ngIf="cat.touched && cat.invalid">
           Ce champ est obligatoire
         </div>
       </div>
@@ -163,15 +193,15 @@
           <div *ngIf="prix.errors.pattern">Prix doix contenir [0..9]</div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="detail">Code</label>
+   <!--   <div class="form-group">
+        <label for="detailE">Code</label>
         <div class="input-group">
           <input id="detailE" type="text" class="form-control" placeholder="Detail produit" name="dp" ngModel #dp="ngModel" required>
         </div>
         <div class="alert alert-danger" role="alert" *ngIf="dp.touched && dp.invalid">
           Ce champ est obligatoire
         </div>
-      </div>
+      </div>-->
       <div class="modal-footer">
         <input type="submit" (click)="update();modal.close('close')" class="btn btn-outline-primary" value="Edit Product" data-dismiss="createLabel" *ngIf="f1.valid">
         <input type="submit" class="btn btn-outline-danger" value="Form invalid" *ngIf="f1.invalid" disabled>
@@ -180,6 +210,7 @@
   </div>
 
 </ng-template>
+<!-- edit dp -->
 <ng-template #confirm let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title1">Profile update</h4>
@@ -194,6 +225,33 @@
     <button type="button" class="btn btn-outline-secondary" (click)="modal.close('close')">Cancel</button>
     <button type="button" class="btn btn-outline-danger" (click)="deleteProduct(productToDelete) ;modal.close('Save click')">Delete</button>
   </div>
+</ng-template>
+
+<ng-template #updateDPmodal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-DP">Add product</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngForm #f1="ngForm">
+      <div class="form-group">
+        <label for="cat">Select Categorie</label>
+        <div class="input-group">
+          <select [(ngModel)]="product.detailproduit.categorieProduit" name="catDP" id="catDP">
+            <option value="electromenager" [selected]="productToDelete.detailproduit.categorieProduit=='electromenager'">Electromenager</option>
+            <option value="alimentaire" [selected]="productToDelete.detailproduit.categorieProduit=='alimentaire'">Alimentaire</option>
+            <option value="quincaillerie" [selected]="productToDelete.detailproduit.categorieProduit=='quincaillerie'">Quincaillerie</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" (click)="updateDP();modal.close('close')" class="btn btn-outline-primary" value="Edit Detail" data-dismiss="createLabel">
+      </div>
+    </form>
+  </div>
+
 </ng-template>
 
 <button class="button btn btn-outline-primary my-3" (click)="open(content)">

@@ -28,4 +28,7 @@ export class DetailProduitService {
   sortDetails(): Observable<DetailProduit[]>{
     return this._http.get<DetailProduit[]>(this.detailUrl+"retrieve-all-details/new");
   }
+  save(d : DetailProduit) : Observable<DetailProduit>{
+    return this._http.post<DetailProduit>(this.detailUrl+"add-detail", d, this.httpOptions);
+  }
 }

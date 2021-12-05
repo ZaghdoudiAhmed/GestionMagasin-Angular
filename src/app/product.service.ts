@@ -33,4 +33,12 @@ export class ProductService {
   updateProduct (product: Produit): Observable<Produit> {
     return this._http.put<Produit>(this.productsUrl+"edit-product/", product, this.httpOptions);
   }
+
+  getbyCategorie(str : string) : Observable<Produit[]>{
+    return this._http.get<Produit[]>(this.productsUrl+"getByCat/"+str);
+  }
+
+  sortByNewest(): Observable<Produit[]>{
+    return this._http.get<Produit[]>(this.productsUrl+"orderByDate");
+  }
 }

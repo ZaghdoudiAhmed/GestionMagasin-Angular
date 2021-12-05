@@ -11,6 +11,7 @@ import { ProductsComponent } from './products/products.component';
 import{ HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -22,12 +23,13 @@ import { DetailProduitComponent } from './detail-produit/detail-produit.componen
     ProductsComponent,
     DetailProduitComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        NgbModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

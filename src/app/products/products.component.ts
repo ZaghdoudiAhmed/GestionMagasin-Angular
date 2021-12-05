@@ -48,6 +48,8 @@ export class ProductsComponent implements OnInit {
   }
 
   public save() {
+    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+    this.product.detailproduit.dateCreation=this.product.detailproduit.dateDerniereModification=utc;
     this.ps.addProduct(this.product).subscribe(res => {
       console.log('Product created!');
       this.list.push(this.product);
@@ -76,5 +78,16 @@ export class ProductsComponent implements OnInit {
     this.width = 8
     this.product=p;
   }
+  updateDP(){
+    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+    this.product.detailproduit.dateDerniereModification=utc;
+    this.ps.updateProduct(this.product).subscribe();
+  }
+  getByCat(str : string){
+    this.ps.getbyCategorie(str).subscribe(value => this.list=value);
+  }
 
+  sortByNewest(){
+    this.ps.sortByNewest().subscribe(value => this.list=value)
+  }
 }

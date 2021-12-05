@@ -9,7 +9,6 @@
     <th scope="col">Created at</th>
     <th scope="col">Updated At</th>
     <th scope="col">Categorie</th>
-    <th scope="col">Product</th>
   </tr>
   </thead>
   <tbody>
@@ -18,8 +17,38 @@
     <td>{{d.dateCreation}}</td>
     <td>{{d.dateDerniereModification}}</td>
     <td>{{d.categorieProduit}}</td>
-  <!--<td>{{getProduct(d.idDetailProduit).libelleProduit}}</td>-->
   </tr>
   </tbody>
 </table>
 
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add product</h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngForm #f1="ngForm">
+      <div class="form-group">
+        <label for="cat">Select Categorie</label>
+        <div class="input-group">
+          <select [(ngModel)]="dp.categorieProduit" name="cat" id="cat">
+            <option value="electromenager">Electromenager</option>
+            <option value="alimentaire">Alimentaire</option>
+            <option value="quincaillerie">Quincaillerie</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" (click)="addDetail();modal.close('close')" class="btn btn-outline-primary" value="Add Product" data-dismiss="createLabel">
+      </div>
+    </form>
+  </div>
+
+</ng-template>
+
+<button class="button btn btn-outline-primary my-3" (click)="open(content)" >
+  <span class="icon"><i class="bi bi-plus-circle"></i></span>
+  <span class="text">Add Detail</span>
+</button>
