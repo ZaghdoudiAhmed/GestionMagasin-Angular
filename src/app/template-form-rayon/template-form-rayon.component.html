@@ -1,0 +1,45 @@
+
+
+<h1>Add Rayon</h1>
+<form #f="ngForm" >
+  <div class="form-group">
+    <label>id</label>
+    <input type="number" name="id" class="form-control" [(ngModel)]="rayon.idRayon" #i="ngModel" required>
+  </div>
+  <div class="alert alert-danger" *ngIf="i.invalid && i.touched">
+    id is required
+  </div>
+  <div class="form-group">
+    <label>code</label>
+    <input type="text" name="code" class="form-control" [(ngModel)]="rayon.code" #t="ngModel"
+           required
+           pattern="[a-zA-Z]+$"
+           minlength="3">
+  </div>
+  <div class="alert alert-danger" *ngIf="t.invalid && t.touched">
+    <div *ngIf="t.errors.required">code is required</div>
+    <div *ngIf="t.errors.minlength">code minlength is 3</div>
+    <div *ngIf="t.errors.pattern">message pattern</div>
+  </div>
+  <div class="form-group">
+    <label>libelle</label>
+    <input type="text" name="libelle" class="form-control" [(ngModel)]="rayon.libelle" #q="ngModel"
+           required>
+  </div>
+  <div class="alert alert-danger" *ngIf="q.invalid && q.touched">
+    libelle is required
+  </div>
+
+ 
+
+          <label>Quantite</label>
+          <input type="number" name="quantite" class="form-control" [(ngModel)]="rayon.qte_maximale" #e="ngModel"
+                 required>
+        <div class="alert alert-danger" *ngIf="e.invalid && e.touched">
+          Quantite is required
+        </div>
+
+
+  <button class="btn btn-success" [disabled]="f.invalid" (click)="addRayon(rayon)" >save</button>
+  <!--(click)="sendmail(fournisseur.email_fournisseur)" -->
+</form>

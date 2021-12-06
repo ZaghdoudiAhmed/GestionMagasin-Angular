@@ -1,37 +1,42 @@
-<div class="container prod">
-  <div class="row justify-content-between">
-    <div class="card" style="width: 18rem">
-      <img src="../../assets/produit.jpeg" class="card-img-top" alt="produit" />
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-    <div class="card" style="width: 18rem">
-      <img src="../../assets/produit.jpeg" class="card-img-top" alt="produit" />
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-    <div class="card" style="width: 18rem">
-      <img src="../../assets/produit.jpeg" class="card-img-top" alt="produit" />
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </div>
+
+
+<header>  </header>
+<form class="d-flex">
+    <input type="number" [(ngModel)]="iddd" name="iddd" class="form-control">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+
+<div class="row">
+<app-fournisseur *ngFor="let f of listFournisseur" let i=index [fournisseur]="f" (notification)="incremtLike($event)"
+[idddInput]="iddd" class="col-md-3">
+</app-fournisseur>
+
 </div>
+
+<!--<button (click)="showimages(f.image_fournisseur,i)" >Show images</button>
+<ng-image-slider  *ngIf="verifslider==i" [images]="imgCollection"   #nav ></ng-image-slider> -->
+  
+
+  
+
+<!--<app-template-form-fournisseur (saveEvent)="pushFournisseur($event)"></app-template-form-fournisseur>-->
+
+<!--<app-listfournisseur></app-listfournisseur>-->
+
+
+
+<app-sliderfournisseur></app-sliderfournisseur>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
