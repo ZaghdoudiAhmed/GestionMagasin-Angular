@@ -1,5 +1,18 @@
 <div class="container prod">
-  <div class="row justify-content-between">
+  <div class="row d-flex justify-content-center">
+    <div *ngFor="let p of list" class="card mx-3 my-3" style="width: 18rem">
+      <img src="../../assets/produit.jpeg" class="card-img-top" alt="produit" />
+      <div class="card-body">
+        <h5 class="card-title">{{p.codeProduit}} - {{p.prixUnitaire}}TND</h5>
+        <p class="card-text">
+          {{p.libelleProduit}}
+        </p>
+          <p class="cat_prod">{{p.detailproduit.categorieProduit}}</p>
+
+        <button class="btn btn-primary" (click)="addToCart(p)"><i class="bi bi-cart3"></i> &nbsp; Add to cart</button>
+      </div>
+    </div>
+    <!--
     <div class="card" style="width: 18rem">
       <img src="../../assets/produit.jpeg" class="card-img-top" alt="produit" />
       <div class="card-body">
@@ -21,17 +34,6 @@
         </p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
-    </div>
-    <div class="card" style="width: 18rem">
-      <img src="../../assets/produit.jpeg" class="card-img-top" alt="produit" />
-      <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
+    </div>-->
   </div>
 </div>

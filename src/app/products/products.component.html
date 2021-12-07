@@ -27,7 +27,7 @@
         </th>
         <th scope="col">
           <div ngbDropdown class="d-inline-block">
-            <p id="dropdownBasic1" style="margin: 0; cursor: pointer;" ngbDropdownToggle>Action</p>
+            <p id="dropdownBasic0" style="margin: 0; cursor: pointer;" ngbDropdownToggle>Action</p>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
               <button ngbDropdownItem (click)="ngOnInit()">All</button>
               <button ngbDropdownItem (click)="sortByNewest()">Sort By Newest</button>
@@ -63,6 +63,10 @@
       </tbody>
     </table>
      </div>
+    <button class="button btn btn-outline-primary my-3" (click)="open(content)">
+      <span class="icon"><i class="bi bi-plus-circle"></i></span>
+      <span class="text">Add Product</span>
+    </button>
   </div>
   <div class="col-md-4" *ngIf="width===8">
     <div class="card">
@@ -87,8 +91,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!-- add product modal -->
 <ng-template #content let-modal>
@@ -210,10 +212,10 @@
   </div>
 
 </ng-template>
-<!-- edit dp -->
+<!-- confirm dialog -->
 <ng-template #confirm let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title1">Profile update</h4>
+    <h4 class="modal-title" id="modal-basic-title1">Confirmation ?</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -226,10 +228,10 @@
     <button type="button" class="btn btn-outline-danger" (click)="deleteProduct(productToDelete) ;modal.close('Save click')">Delete</button>
   </div>
 </ng-template>
-
+<!-- edit dp -->
 <ng-template #updateDPmodal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-DP">Add product</h4>
+    <h4 class="modal-title" id="modal-basic-DP">Edit product detail</h4>
     <button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -254,9 +256,4 @@
 
 </ng-template>
 
-<button class="button btn btn-outline-primary my-3" (click)="open(content)">
-  <span class="icon"><i class="bi bi-plus-circle"></i></span>
-  <span class="text">Add Product</span>
-</button>
-
-
+<notifier-container></notifier-container>

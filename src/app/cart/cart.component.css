@@ -1,0 +1,14 @@
+.rowC {
+  background-color: #E9E7E7;
+}
+h3{
+  font-size: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: .025em;
+}
+p{
+display: inline-block;
+font-size: .85em;
+color: #777777;}
+

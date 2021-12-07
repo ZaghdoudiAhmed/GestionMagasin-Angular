@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ProductsComponent} from "./products/products.component";
 import {DetailProduitComponent} from "./detail-produit/detail-produit.component";
+import {CartComponent} from "./cart/cart.component";
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'facture', component: FactureComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'product-details', component: DetailProduitComponent },
+  { path: 'checkout', component: CartComponent },
   { path: '**', component: NotfoundpageComponent }
 ];
 

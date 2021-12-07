@@ -12,6 +12,8 @@ import{ HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NotifierModule} from 'angular-notifier';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -21,14 +23,16 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     NotfoundpageComponent,
     FactureComponent,
     ProductsComponent,
-    DetailProduitComponent
+    DetailProduitComponent,
+    CartComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
         FormsModule,
-        NgbModule
+        NgbModule,
+        NotifierModule
     ],
   providers: [],
   bootstrap: [AppComponent]

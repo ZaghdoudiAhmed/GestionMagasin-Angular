@@ -1,3 +1,11 @@
 .prod {
   padding-top: 50px;
 }
+.cat_prod{
+  text-align: center;
+  color: #fff;
+  background-color: green;
+  width: 5rem;
+  border-radius: 50px;
+  font-size: 10px;
+}

@@ -1,0 +1,36 @@
+<hr>
+<div class="d-flex justify-content-between my-3">
+  <h3>My Cart</h3>
+  <a [routerLink]="['/home']" class="btn btn-md btn-success">Continue Shopping</a>
+</div>
+<hr>
+<br>
+<div class="cart-item" *ngFor="let item of items;  let i=index">
+  <div class="row" [ngClass]="{'rowC': i%2==0}">
+    <div class="col-md-8">
+      <p class="item_code">#{{item.codeProduit}}</p>
+      <h3>{{item.libelleProduit}}</h3>
+      <p>{{item.detailproduit.categorieProduit}}</p>
+    </div>
+    <div class="col-md-2" >
+      <h2 style="margin-top : 25px">{{item.prixUnitaire |currency }}</h2>
+    </div>
+    <div class="col-md-1">
+      <button class="btn btn-sm btn-outline-secondary" style="margin-top : 25px" (click)="deleteItem(i, item)">X</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="sum!==0">
+  <div class="row" [ngClass]="{'rowC': items.length%2==0}">
+    <div class="col-md-2 offset-8" >
+      <h2 style="margin-top : 25px">Total :  {{ sum |currency }}</h2>
+    </div>
+  </div>
+  <div class="offset-10 my-3">
+      <button class="btn btn-sm btn-primary"><i class="bi bi-cash-coin"></i> &nbsp;Continue to payment</button>
+  </div>
+</div>
+<div class="text-center" *ngIf="sum===0">
+  <p style="font-size: 20px"> Cart is empty  <i class="bi bi-patch-exclamation-fill"></i></p>
+</div>
+

@@ -5,6 +5,7 @@ import {Produit} from "../produit";
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import {DetailProduit} from "../detail-produit";
+import {NotifierService} from "angular-notifier";
 
 @Component({
   selector: 'app-products',
@@ -14,8 +15,10 @@ import {DetailProduit} from "../detail-produit";
 
 export class ProductsComponent implements OnInit {
 
-  constructor(private ps: ProductService, private modalService: NgbModal, private router: Router) {
+  constructor(private ps: ProductService, private modalService: NgbModal, private router: Router, notifService: NotifierService) {
+  this.notif = notifService;
   }
+  private readonly notif : NotifierService;
   dp : DetailProduit = new DetailProduit();
   list: Produit[] = [];
   product: Produit = new Produit();
@@ -52,6 +55,7 @@ export class ProductsComponent implements OnInit {
     this.product.detailproduit.dateCreation=this.product.detailproduit.dateDerniereModification=utc;
     this.ps.addProduct(this.product).subscribe(res => {
       console.log('Product created!');
+      this.notif.notify('success', 'Product added successfully !', 'THAT_NOTIFICATION_ID');
       this.list.push(this.product);
       this.router.navigateByUrl('/products');
     });
@@ -66,11 +70,13 @@ export class ProductsComponent implements OnInit {
   deleteProduct(p: Produit) {
     this.ps.deleteProduct(p).subscribe(res => this.router.navigateByUrl('/products'));
     this.list.splice(this.index, 1);
+    this.notif.notify('error', 'Product deleted successfully !', 'THAT_NOTIFICATION_ID');
   }
 
   update() {
     this.ps.updateProduct(this.productToDelete).subscribe();
     this.router.navigateByUrl('/products');
+    this.notif.notify('success', 'Product edited successfully !', 'THAT_NOTIFICATION_ID');
     console.log(this.productToDelete)
   }
 
@@ -90,4 +96,5 @@ export class ProductsComponent implements OnInit {
   sortByNewest(){
     this.ps.sortByNewest().subscribe(value => this.list=value)
   }
+
 }
