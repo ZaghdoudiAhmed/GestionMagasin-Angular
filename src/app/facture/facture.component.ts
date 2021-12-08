@@ -15,6 +15,11 @@ import { saveAs } from 'file-saver';
 export class FactureComponent implements OnInit {
   FormFacture: FormGroup;
   listFacture: Facture[] = [];
+  facture: Facture = new Facture();
+  factureSupprimer: Facture = new Facture();
+  index: number;
+
+  factureDetail: Facture = new Facture();
   show: Boolean = false;
   p: number = 1;
 
@@ -64,6 +69,20 @@ export class FactureComponent implements OnInit {
       );
   }
 
+  // Model Details //
+  openDetails(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -92,5 +111,25 @@ export class FactureComponent implements OnInit {
   // Exportation EXCEL //
   exportAsXLSX(): void {
     this.es.exportAsExcelFile(this.listFacture, 'factures_data');
+  }
+  // Ajouter Facture //
+  ajouter() {
+    // console.log(this.facture.montantFacture);
+    var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+    this.facture.dateFacture = utc;
+    this.sf.AddFacture(this.facture);
+    console.log(this.facture);
+  }
+
+  // Supprimer Facture //
+  SupprimerFacture(f: Facture) {
+    this.sf.SupprimerFacture(f);
+    this.listFacture.splice(this.index, 1);
+  }
+
+  FactureaSupprimer(f: Facture, i: number) {
+    this.factureSupprimer = f;
+    this.index = i;
+    console.log(this.factureSupprimer);
   }
 }

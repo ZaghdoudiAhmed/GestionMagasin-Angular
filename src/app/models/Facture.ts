@@ -1,7 +1,9 @@
+import { DetailsFacture } from './DetailsFacture';
 export class Facture {
   idFacture: number;
   montantRemise: number;
   montantFacture: number;
-  dateFacture: Date;
+  dateFacture: string;
   active: boolean;
+  detailFacture: DetailsFacture = {} as DetailsFacture;
 }
