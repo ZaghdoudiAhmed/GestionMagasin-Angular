@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './accueil/home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { NotfoundpageComponent } from './notfoundpage/notfoundpage.component';
 import { FactureComponent } from './facture/facture.component';
@@ -13,7 +13,7 @@ import {FormsModule} from "@angular/forms";
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NotifierModule} from 'angular-notifier';
-import { CartComponent } from './cart/cart.component';
+import { CartComponent } from './accueil/cart/cart.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { OneProductComponent } from './one-product/one-product.component';
 
