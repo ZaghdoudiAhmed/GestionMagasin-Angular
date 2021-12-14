@@ -5,5 +5,4 @@ export class Facture {
   montantFacture: number;
   dateFacture: string;
   active: boolean;
-  detailFacture: DetailsFacture = {} as DetailsFacture;
 }

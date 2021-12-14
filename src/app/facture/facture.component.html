@@ -19,7 +19,7 @@
               <i class="bi bi-box-arrow-up"></i>
             </button>
             <div class="dropdown-menu" ngbDropdownMenu>
-              <button ngbDropdownItem (click)="downloadFile(listFacture)">
+              <button ngbDropdownItem (click)="downloadFile(detailsFacture)">
                 En CSV
               </button>
               <button ngbDropdownItem (click)="exportAsXLSX()">En Excel</button>
@@ -41,44 +41,54 @@
           <tbody class="text-center">
             <tr
               *ngFor="
-                let f of listFacture
+                let f of detailsFacture
                   | paginate: { itemsPerPage: 3, currentPage: p };
                 let i = index
               "
             >
-              <th>{{ f.montantFacture }}</th>
-              <th>{{ f.montantRemise }}</th>
-              <th>{{ f.dateFacture | date: "dd-MM-yyyy" }}</th>
+              <th>{{ f.facture.montantFacture | currency: "TND" }}</th>
+              <th>{{ f.facture.montantRemise | currency: "TND" }}</th>
+              <th>{{ f.facture.dateFacture | date: "dd-MM-yyyy" }}</th>
               <th>
                 <span
-                  *ngIf="f.active == true"
-                  class="badge rounded-pill bg-light text-dark"
+                  *ngIf="f.facture.active == true"
+                  class="badge rounded-pill bg-success"
                 >
                   active
                 </span>
               </th>
               <th>
-                <a (click)="factureDetail = f; openDetails(contentDetail)">
+                <a [routerLink]="['/details', f.idDetailFacture]">
                   <i class="bi bi-info-square-fill"></i>
                 </a>
               </th>
               <th>
                 <button
                   class="btn btn-outline-danger mx-2"
-                  (click)="open(contentConfirme); FactureaSupprimer(f, i)"
+                  (click)="
+                    FactureaSupprimer(f.facture, i); open(contentConfirme)
+                  "
                 >
                   <i class="bi bi-trash"> </i>
                 </button>
 
                 <button
                   class="btn btn-outline-warning"
-                  (click)="open(contentEdit)"
+                  (click)="ShowModifierFacture(f, i)"
                 >
                   <i class="bi bi-pencil-square"></i>
+                </button>
+                <button
+                  *ngIf="f.facture.active == true"
+                  class="btn btn-outline-info mx-2"
+                  (click)="FactureaBloquer(f.facture, i); open(contentBloque)"
+                >
+                  <i class="bi bi-lock"></i>
                 </button>
               </th>
             </tr>
           </tbody>
+          <hr />
           <pagination-controls (pageChange)="p = $event"></pagination-controls>
         </table>
       </div>
@@ -107,7 +117,7 @@
                 type="number"
                 name="montant"
                 ngModel
-                [(ngModel)]="facture.montantFacture"
+                [(ngModel)]="detailfacture.facture.montantFacture"
                 #montant="ngModel"
                 required
                 class="form-control"
@@ -127,8 +137,7 @@
               <input
                 type="number"
                 name="remise"
-                ngModel
-                [(ngModel)]="facture.montantRemise"
+                [(ngModel)]="detailfacture.facture.montantRemise"
                 #remise="ngModel"
                 required
                 class="form-control"
@@ -145,13 +154,12 @@
               </div>
             </div>
           </div>
-          <!-- <div *ngIf="f1.valid" ngForm #f2="ngForm">
+          <div *ngIf="f1.valid" ngForm #f2="ngForm">
             <div class="form-floating mb-3">
               <input
                 type="number"
                 name="pourcentageRemise"
-                ngModel
-                [(ngModel)]="facture.detailFacture[0].pourcentageRemise"
+                [(ngModel)]="detailfacture.pourcentageRemise"
                 #pourcentageRemise="ngModel"
                 required
                 class="form-control"
@@ -173,8 +181,7 @@
               <input
                 type="number"
                 name="prixTotal"
-                ngModel
-                [(ngModel)]="facture.detailFacture[0].prixTotal"
+                [(ngModel)]="detailfacture.prixTotal"
                 #prixTotal="ngModel"
                 required
                 class="form-control"
@@ -194,22 +201,12 @@
               <button
                 type="submit"
                 class="btn btn-outline-dark"
-                (click)="modal.close('Save click'); ajouter()"
+                (click)="modal.close('Save click'); ajouter(); refresh()"
                 [disabled]="f1.invalid || f2.invalid"
               >
-                Suivant
+                Submit
               </button>
             </div>
-          </div> -->
-          <div class="modal-footer">
-            <button
-              type="submit"
-              class="btn btn-outline-dark"
-              (click)="modal.close('Save click'); ajouter()"
-              [disabled]="f1.invalid"
-            >
-              Suivant
-            </button>
           </div>
         </form>
       </div>
@@ -229,7 +226,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <!-- <div class="modal-body">
         <div class="row">
           <h5 class="col-6">Pourcentage Remise :</h5>
           <label class="col-4"
@@ -252,18 +249,15 @@
             >{{ factureDetail.detailFacture[0].prixTotal }} dt</label
           >
         </div>
-      </div>
+      </div> -->
     </ng-template>
 
-    <ng-template #contentEdit let-modal>
+    <ng-template #contentBloque let-modal>
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">
-          Modifier une Facture
-          <i class="bi bi-file-earmark-text"></i>
-        </h4>
+        <h4 class="modal-title" id="modal-basic-title1">Bloquer le facture</h4>
         <button
           type="button"
-          class="close btn btn-outline-danger"
+          class="btn btn-outline-danger"
           aria-label="Close"
           (click)="modal.dismiss('Cross click')"
         >
@@ -271,79 +265,23 @@
         </button>
       </div>
       <div class="modal-body">
-        <form ngForm #f="ngForm">
-          <div class="form-floating mb-3">
-            <input
-              type="number"
-              name="montant"
-              ngModel
-              #montant="ngModel"
-              required
-              class="form-control"
-            />
-            <label for="floatingInput">Montant Facture</label>
-            <div *ngIf="montant.touched && montant.errors">
-              <div
-                class="alert alert-danger"
-                role="alert"
-                *ngIf="montant.errors.required"
-              >
-                Champ Obligatoire
-              </div>
-            </div>
-          </div>
-          <div class="form-floating mb-3">
-            <input
-              type="number"
-              name="remise"
-              ngModel
-              #remise="ngModel"
-              required
-              class="form-control"
-              id="floatingPassword"
-            />
-            <label for="floatingPassword">Remise</label>
-            <div *ngIf="remise.touched && remise.errors">
-              <div
-                class="alert alert-danger"
-                role="alert"
-                *ngIf="remise.errors.required"
-              >
-                Champ Obligatoire
-              </div>
-            </div>
-          </div>
-          <div class="form-floating mb-3">
-            <input
-              type="date"
-              ngModel
-              #date="ngModel"
-              required
-              class="form-control"
-              id="floatingInput"
-            />
-            <label for="floatingInput">Date </label>
-            <div *ngIf="date.touched && date.errors">
-              <div
-                class="alert alert-danger"
-                role="alert"
-                *ngIf="date.errors.required"
-              >
-                Champ Obligatoire
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="submit"
-              class="btn btn-outline-dark"
-              (click)="modal.close('Save click')"
-              [disabled]="f.invalid"
-            >
-              Save
-            </button>
-          </div>
-        </form>
+        <p>Vous voulez vraiment bloquer cette facture ?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="modal.close('close')"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-danger"
+          (click)="BloqueFacture(factureBloquer); modal.close('Save click')"
+        >
+          Bloque
+        </button>
       </div>
     </ng-template>
 
@@ -376,7 +314,7 @@
           type="button"
           class="btn btn-outline-danger"
           (click)="
-            modal.close('Save click'); SupprimerFacture(factureSupprimer)
+            SupprimerFacture(factureSupprimer); modal.close('Save click')
           "
         >
           Delete
@@ -408,45 +346,121 @@
             <i class="bi bi-plus"></i>
             Ajouter une facture
           </button>
+
+          <hr />
         </div>
       </div>
       <div class="col-sm-5 card">
-        <div class="card-body">
-          <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-            <ngb-panel title="Simple">
-              <ng-template ngbPanelContent>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </ngb-panel>
-            <ngb-panel>
-              <ng-template ngbPanelTitle>
-                <span>&#9733; <b>Fancy</b> title &#9733;</span>
-              </ng-template>
-              <ng-template ngbPanelContent>
-                Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven't heard of them accusamus labore sustainable VHS.
-              </ng-template>
-            </ngb-panel>
-          </ngb-accordion>
+        <div [hidden]="!show" class="card-body">
+          <div class="header">
+            <h3 class="card-title text-center">Modification Facture</h3>
+            <i class="bi bi-gear-fill" style="font-size: 1.5em"></i>
+          </div>
+
+          <hr />
+          <form ngForm #formEdit="ngForm">
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                name="montant"
+                [(ngModel)]="factureModifier.facture.montantFacture"
+                #montant="ngModel"
+                required
+                class="form-control"
+              />
+              <label for="floatingInput">Montant Facture</label>
+              <div *ngIf="montant.touched && montant.errors">
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  *ngIf="montant.errors.required"
+                >
+                  Champ Obligatoire
+                </div>
+              </div>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                name="remise"
+                [(ngModel)]="factureModifier.facture.montantRemise"
+                value="{{ factureModifier.facture.montantRemise }}"
+                #remise="ngModel"
+                required
+                class="form-control"
+                id="floatingPassword"
+              />
+              <label for="floatingPassword">Remise</label>
+              <div *ngIf="remise.touched && remise.errors">
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  *ngIf="remise.errors.required"
+                >
+                  Champ Obligatoire
+                </div>
+              </div>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                name="pourcentageRemise"
+                ngModel
+                value="{{ factureModifier.pourcentageRemise }}"
+                [(ngModel)]="factureModifier.pourcentageRemise"
+                #pourcentageRemise="ngModel"
+                required
+                class="form-control"
+              />
+              <label for="floatingPassword">Pourcentage Remise</label>
+              <div
+                *ngIf="pourcentageRemise.touched && pourcentageRemise.errors"
+              >
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  *ngIf="pourcentageRemise.errors.required"
+                >
+                  Champ Obligatoire
+                </div>
+              </div>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                name="prixTotal"
+                ngModel
+                [(ngModel)]="factureModifier.prixTotal"
+                value="{{ factureModifier.prixTotal }}"
+                #prixTotal="ngModel"
+                required
+                class="form-control"
+              />
+              <label for="floatingInput">Prix Totale</label>
+              <div *ngIf="prixTotal.touched && prixTotal.errors">
+                <div
+                  class="alert alert-danger"
+                  role="alert"
+                  *ngIf="prixTotal.errors.required"
+                >
+                  Champ Obligatoire
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="submit"
+                (click)="ModifierFacture(factureModifier)"
+                class="btn btn-outline-dark"
+              >
+                Modifier
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </div>
+<notifier-container></notifier-container>

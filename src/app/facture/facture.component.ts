@@ -1,9 +1,14 @@
+import { DetailsComponent } from './../details/details.component';
+import { DetailsFacture } from './../models/DetailsFacture';
 import { ExcelService } from './../services/excel.service';
 import { FactureService } from './../services/facture.service';
 import { Facture } from './../models/Facture';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
+
+import { NotifierService } from 'angular-notifier';
 
 import { saveAs } from 'file-saver';
 
@@ -13,34 +18,45 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./facture.component.css'],
 })
 export class FactureComponent implements OnInit {
+  private readonly notifier: NotifierService;
+
   FormFacture: FormGroup;
-  listFacture: Facture[] = [];
-  facture: Facture = new Facture();
-  factureSupprimer: Facture = new Facture();
+  detailsFacture: DetailsFacture[] = [];
+  detailfacture: DetailsFacture = new DetailsFacture();
+  factureSupprimer: DetailsFacture = new DetailsFacture();
+  factureBloquer: DetailsFacture = new DetailsFacture();
+  factureModifier: DetailsFacture = new DetailsFacture();
   index: number;
 
-  factureDetail: Facture = new Facture();
+  // factureDetail: Facture = new Facture();
   show: Boolean = false;
   p: number = 1;
 
   closeResult = '';
 
-  myForm: FormGroup;
-  @Input() factureToEdit: Facture;
+  // myForm: FormGroup;
+  // @Input() factureToEdit: Facture;
 
   constructor(
     private sf: FactureService,
     private es: ExcelService,
-    private modalService: NgbModal
-  ) {}
-
-  ngOnInit(): void {
-    this.sf.getAllFacturesFormDb().subscribe((res) => {
-      this.listFacture = res;
-      console.log(this.listFacture);
-    });
+    private modalService: NgbModal,
+    private notifierService: NotifierService,
+    private activatedroute: ActivatedRoute
+  ) {
+    this.notifier = notifierService;
   }
 
+  ngOnInit(): void {
+    this.sf.getAllDetailFacture().subscribe((res) => {
+      this.detailsFacture = res;
+      console.log(this.detailsFacture);
+    });
+  }
+  //Refresh page //
+  refresh(): void {
+    window.location.reload();
+  }
   // Model Ajouter //
   open(content) {
     this.modalService
@@ -93,6 +109,8 @@ export class FactureComponent implements OnInit {
     }
   }
 
+  //Recherche //
+
   // Exportation CSV //
   downloadFile(data: any) {
     const replacer = (key, value) => (value === null ? '' : value); // specify how you want to handle null values here
@@ -110,26 +128,60 @@ export class FactureComponent implements OnInit {
   }
   // Exportation EXCEL //
   exportAsXLSX(): void {
-    this.es.exportAsExcelFile(this.listFacture, 'factures_data');
+    this.es.exportAsExcelFile(this.detailsFacture, 'factures_data');
   }
   // Ajouter Facture //
-  ajouter() {
-    // console.log(this.facture.montantFacture);
+  public ajouter() {
     var utc = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
-    this.facture.dateFacture = utc;
-    this.sf.AddFacture(this.facture);
-    console.log(this.facture);
+    this.detailfacture.facture.dateFacture = utc;
+    this.detailfacture.facture.active = true;
+    this.sf.CreateFacture(this.detailfacture).subscribe((res) => {
+      console.log(res);
+      this.notifier.notify('success', 'Facture ajouter avec sucess !');
+    });
+    console.log(this.detailfacture);
   }
 
   // Supprimer Facture //
-  SupprimerFacture(f: Facture) {
-    this.sf.SupprimerFacture(f);
-    this.listFacture.splice(this.index, 1);
+  SupprimerFacture(f: DetailsFacture) {
+    console.log(f);
+    this.sf.SupprimerFacture(f).subscribe((res) => {
+      this.notifier.notify('error', 'Facture Supprimer avec sucess !');
+    });
+
+    this.detailsFacture.splice(this.index, 1);
   }
 
   FactureaSupprimer(f: Facture, i: number) {
-    this.factureSupprimer = f;
+    this.factureSupprimer.facture = f;
     this.index = i;
-    console.log(this.factureSupprimer);
+  }
+
+  //Bloquer Facture //
+  BloqueFacture(f: DetailsFacture) {
+    this.sf.BloqueFacture(f).subscribe((res) => {
+      this.notifier.notify('warning', 'Facture bloquer avec sucess !');
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    });
+  }
+
+  FactureaBloquer(f: Facture, i: number) {
+    this.factureBloquer.facture = f;
+    this.index = i;
+  }
+
+  //Modifier Facture //
+  ShowModifierFacture(f: DetailsFacture, i: number) {
+    this.show = true;
+    this.factureModifier = f;
+    this.index = i;
+  }
+  ModifierFacture(f: DetailsFacture) {
+    this.sf.ModifierFacture(f).subscribe((res) => {
+      window.location.reload();
+    });
   }
 }

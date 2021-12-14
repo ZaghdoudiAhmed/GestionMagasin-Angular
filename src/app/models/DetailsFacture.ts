@@ -1,7 +1,8 @@
+import { Facture } from './Facture';
 export class DetailsFacture {
   idDetailFacture: number;
-  qte: number;
   prixTotal: number;
   pourcentageRemise: number;
   montantRemise: number;
+  facture: Facture = {} as Facture;
 }

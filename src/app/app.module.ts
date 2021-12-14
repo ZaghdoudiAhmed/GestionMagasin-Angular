@@ -9,11 +9,11 @@ import { HeaderComponent } from './header/header.component';
 import { NotfoundpageComponent } from './notfoundpage/notfoundpage.component';
 import { FactureComponent } from './facture/facture.component';
 import { HttpClientModule } from '@angular/common/http';
-import { EditFactureComponent } from './edit-facture/edit-facture.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component'; // <== add the imports!
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
+import { NotifierModule } from 'angular-notifier';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,6 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
     HeaderComponent,
     NotfoundpageComponent,
     FactureComponent,
-    EditFactureComponent,
     FooterComponent,
   ],
   imports: [
@@ -33,6 +32,7 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
     FormsModule, // <========== Add this line!
     ReactiveFormsModule,
     NgxPaginationModule, // <------- Module pagination
+    NotifierModule,
   ],
   providers: [ExcelService],
   bootstrap: [AppComponent],
