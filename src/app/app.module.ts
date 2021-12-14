@@ -9,6 +9,7 @@ import { NotfoundpageComponent } from './notfoundpage/notfoundpage.component';
 import { FactureComponent } from './facture/facture.component';
 import { ClientComponent } from './client/client.component';
 import { SingupComponent } from './singup/singup.component';
+import { StockComponent } from './models/stock/stock.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SingupComponent } from './singup/singup.component';
     NotfoundpageComponent,
     FactureComponent,
     ClientComponent,
-    SingupComponent
+    SingupComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule,
