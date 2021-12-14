@@ -55,8 +55,8 @@
                       <table class="table table-success table-striped ">
                           <thead>
                               <tr>
-                                  <th (click)="sort('idFournisseur')">ID&nbsp;<i class="fa fa-sort"></i></th>
-                                  <th (click)="sort('idFournisseur')">Code&nbsp;<i class="fa fa-sort"></i></th>
+                                  <th (click)="sort('idFournisseur')">ID 🔼<i class="fa fa-sort"></i></th>
+                                  <th (click)="sort('idFournisseur')">Code</th>
 
                                   <th><span>Libelle</span></th>
                                   <th><span>Date_fin_contrat</span></th>
@@ -65,7 +65,7 @@
   
                               </tr>
                           </thead>
-                          <tbody *ngFor="let u of listFournisseur | orderBy: key: reverse | paginate: {itemsPerPage:3,currentPage:p};">
+                          <tbody *ngFor="let u of listFournisseur | orderBy: key: reverse | paginate: {itemsPerPage:3,currentPage:p}; let i=index">
 
                               <tr  [style.background-color]=" u.idFournisseur == idd ? 'red' : 'green'"   *ngIf="u.idFournisseur == idd || idd == null"   >
   
@@ -91,14 +91,20 @@
                                   <td style="width: 20%;">
                          <!-- <button ng-if="{{u.date_fin_contrat}} < {{CurrentDate}}" class="btn-danger" type="button">deletef</button>--> 
   
-                        <button class="btn-danger"(click)="delete(u.idFournisseur,u.date_fin_contrat,u.email_fournisseur,u.libelle)">Delete</button>
+                         <i class="fa fa-pencil-square-o" aria-hidden="true">  <button class="btn-danger"(click)="delete(u.idFournisseur,u.date_fin_contrat,u.email_fournisseur,u.libelle)"> Delete</button></i> 
                                      <!-- <button class="btn-danger" [hidden]="u.accountCategory == 'Admin'">Delete</button>
                                       <button class="btn-danger" *ngIf="u.accountCategory != 'Admin'">Delete</button>-->
+                                      
+                             
+
                                   </td>
                               
                               </tr>
                             
+                              
                               </tbody>
+
+                              
                               <pagination-controls (pageChange)="p =$event"></pagination-controls>
 
                               </table>
@@ -124,9 +130,10 @@
 
 
 
-
 <app-template-form-fournisseur ></app-template-form-fournisseur>
 
 
+<!--<button (click)="showimages(u.image_fournisseur,i)" >Show images</button>
+<ng-image-slider  *ngIf="verifslider==i" #nav [images]="imgCollection"    ></ng-image-slider> -->
 
  

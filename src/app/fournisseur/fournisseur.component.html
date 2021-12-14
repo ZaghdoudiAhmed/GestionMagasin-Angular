@@ -4,11 +4,9 @@
     <div class="card" style="width: 18rem;">
       <img src={{fournisseur.image_fournisseur}} class="card-img-top" alt="..." >
       <div class="card-body">
-        <h5 class="card-title">{{fournisseur.idFournisseur}}</h5>
-        <p class="card-text">Code {{fournisseur.code}}</p>
-        <p class="card-text">Libelle: {{fournisseur.libelle}}</p>
-        <button class="btn btn-primary" (click)="sendNotif()">{{fournisseur.likeFournisseur}} ==> like <3</button>
-        <a [routerLink]="['fournisseur',fournisseur.idFournisseur,fournisseur.libelle,fournisseur.date_fin_contrat,fournisseur.likeFournisseur,fournisseur.email_fournisseur]"  class="btn btn-dark" style="float: right">
+        <h5 class="card-text">{{fournisseur.libelle}}</h5>
+        <button class="btn btn-primary" (click)="sendNotif()">{{fournisseur.likeFournisseur}}<=>like❤️</button>
+        <a [routerLink]="['fournisseur',fournisseur.idFournisseur,fournisseur.libelle,fournisseur.date_fin_contrat,fournisseur.likeFournisseur,fournisseur.email_fournisseur,fournisseur.image_fournisseur]"  class="btn btn-dark" style="float: right">
           detail
         </a>
       </div>

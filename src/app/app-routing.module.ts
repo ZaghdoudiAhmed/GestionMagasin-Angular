@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'fournisseur', component: FournisseurComponent },
   { path: 'adminfournisseur', component: ListfournisseurComponent },
   { path: 'adminrayon', component: ListerayonComponent },
-  {path: 'home/fournisseur/:id/:libelle/:date_fin_contrat/:likeFournisseur/:email_fournisseur', component: DetailFournisseurComponent},
+  {path: 'home/fournisseur/:id/:libelle/:date_fin_contrat/:likeFournisseur/:email_fournisseur/:image_fournisseur', component: DetailFournisseurComponent},
   { path: '**', component: NotfoundpageComponent },
 ];
 

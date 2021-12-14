@@ -72,7 +72,7 @@ if(new Date(dateF) < new Date(this.CurrentDate)){
     this.serviceFournisseur.deleteFournisseur(id).subscribe(
       ()=>this.listFournisseur = this.listFournisseur.filter(Fournisseur =>Fournisseur.idFournisseur != id)
     );
-    prompt("contrat fini  "+mail+""+lib);
+    alert("contrat fini Fournisseur supprimé ✅✅✅");
 
 
     
@@ -102,7 +102,7 @@ this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
   }*/
 );
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  } else {    alert("contrat n est pas fini ");
+  } else {    alert("contrat n'est pas fini!! Vous ne pouvez pas supprimer ce fournisseur ⛔⛔⛔⛔");
 
  // this.datelcontrat=new Date(dateF);
 
@@ -211,13 +211,13 @@ this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
  // if( -new Date(this.listFournisseur[index].date_fin_contrat).getTime()+this.CurrentDate >= 599362854){
 
 
- (Math.trunc(this.convert=(-new Date(this.listFournisseur[index].date_fin_contrat).getTime()+this.CurrentDate)/3600/360/60));
+ (Math.trunc(this.convert=(+new Date(this.listFournisseur[index].date_fin_contrat).getTime()-this.CurrentDate)/3600/360/60));
 
     let user = {
       name: this.listFournisseur[index].code,
       email: this.listFournisseur[index].email_fournisseur,
       sujet: "Expiration contrat Bientot",
-      html : "Hi "+this.listFournisseur[index].libelle+" Ton Contrat avec notre magasin espirera Dans "+this.convert+" jours"
+      html : "Hi "+this.listFournisseur[index].libelle+" Ton Contrat avec notre magasin espirera Dans "+Math.trunc(this.convert)+" jours"
 
     }
     this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
@@ -240,6 +240,41 @@ this.http.sendEmail("http://localhost:3000/sendmail", user).subscribe(
   } 
   } 
 
+
+
+
+
+
+
+
+
+
+
+
+  
+imgCollection: Array<object> = [];
+verifslider=-1;
+showimages(images:any,i:any){
+if(this.verifslider==i){
+
+  for(let img of images){
+
+    let obj = {'i':i,'image':img.image_fournisseur,'thumbImage':img.image_fournisseur,'alt':img.libelle,'title':img.libelle};
+    this.imgCollection.splice(this.imgCollection.indexOf(obj),1);
+  }
+  this.verifslider=-1;
+}
+
+else{
+  this.imgCollection=[];
+  this.verifslider=i;
+  console.log(images);
+  for(let img of images){
+    console.log(i.url);
+    this.imgCollection.push({'i':i,'image':img.image_fournisseur,'thumbImage':img.image_fournisseur,'alt':img.libelle,'title':img.libelle});
+  }
+}
+}
 
 
 

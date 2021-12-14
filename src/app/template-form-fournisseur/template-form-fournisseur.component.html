@@ -17,7 +17,7 @@
            minlength="3">
   </div>
   <div class="alert alert-danger" *ngIf="t.invalid && t.touched">
-    <div *ngIf="t.errors.required">code is required</div>
+    <div *ngIf="t.errors.required">code est obligatoire</div>
     <div *ngIf="t.errors.minlength">code minlength is 3</div>
     <div *ngIf="t.errors.pattern">message pattern</div>
   </div>
@@ -27,7 +27,7 @@
            required>
   </div>
   <div class="alert alert-danger" *ngIf="q.invalid && q.touched">
-    libelle is required
+    Verifier libelle
   </div>
 
   <label>Date_fin_contrat</label>
@@ -35,7 +35,7 @@
          required>
 
 <div class="alert alert-danger" *ngIf="d.invalid && d.touched">
-    Date is required
+    Verifier la date
   </div>
 
 
@@ -47,13 +47,20 @@
          <div class="form-group">
           <label>Email</label>
           <input type="text" name="email_fournisseur" class="form-control" [(ngModel)]="fournisseur.email_fournisseur" #e="ngModel"
-                 required>
+                 required
+                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                 
         </div>
         <div class="alert alert-danger" *ngIf="e.invalid && e.touched">
-          email is required
+          Verifier l'email
         </div>
 
 
-  <button class="btn btn-success" [disabled]="f.invalid" (click)="addFournisseur(fournisseur)" >save</button>
+
+<ng-template #popContent>Ajout effectue</ng-template>
+<ng-template #popTitle>Nouveau Fournisseur !!!</ng-template>
+
+
+  <button class="btn btn-success" [disabled]="f.invalid" (click)="addFournisseur(fournisseur)"  [ngbPopover]="popContent" [popoverTitle]="popTitle">save</button>
   <!--(click)="sendmail(fournisseur.email_fournisseur)" -->
 </form>

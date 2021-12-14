@@ -13,6 +13,8 @@ export class DetailFournisseurComponent implements OnInit {
   date_fin_contrat: string;
   likeFournisseur: number;
   email_fournisseur :string;
+  image_fournisseur :string;
+
 
 
   title = 'QRcodes';
@@ -39,6 +41,8 @@ export class DetailFournisseurComponent implements OnInit {
     this.date_fin_contrat= this.service.snapshot.params.date_fin_contrat; 
     this.likeFournisseur= this.service.snapshot.params.likeFournisseur;
     this.email_fournisseur= this.service.snapshot.params.email_fournisseur;
+    this.image_fournisseur= this.service.snapshot.params.image_fournisseur;
+
 
 
     

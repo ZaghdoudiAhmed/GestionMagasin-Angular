@@ -5,31 +5,35 @@ import { ListfournisseurComponent } from '../listfournisseur/listfournisseur.com
 import { Fournisseur } from '../models/Fournisseur';
 import { FournisseurService } from '../services/fournisseur.service';
 import { HttpService } from '../services/http.service';
-
+import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-sliderfournisseur',
   templateUrl: './sliderfournisseur.component.html',
-  styleUrls: ['./sliderfournisseur.component.css']
+  styleUrls: ['./sliderfournisseur.component.css'],
+  providers: [NgbCarouselConfig]
 })
 export class SliderfournisseurComponent implements OnInit {
 
 
-
+  showNavigationArrows = false;
+  showNavigationIndicators = false;
+  images = [1055, 194, 368].map((n) => `https://picsum.photos/id/${n}/900/500`);
 
 
   data = [
     { img: "../../assets/fournisseur.jpg", title: "Slide 1" },
     { img: "../../assets/f.png", title: "Slide 2" },
-    { img: "../../assets/fournisseur.jpg", title: "Slide 3" }
+    { img: "../../assets/fournisseur.jpg", title: "Slide 3" },
+    { img: "../../assets/produit.jpeg", title: "Slide 3" }
+
   ];
 
-
-  
-
   listFournisseur: Fournisseur[];
+  constructor(private serviceFournisseur: FournisseurService,private http: HttpService,config: NgbCarouselConfig) {
 
-
-  constructor(private serviceFournisseur: FournisseurService,private http: HttpService) { }
+    config.showNavigationArrows = true;
+    config.showNavigationIndicators = true;
+   }
 
   ngOnInit(): void {
 
@@ -63,31 +67,7 @@ export class SliderfournisseurComponent implements OnInit {
 
 
 
-/*imgCollection: Array<object> = [];
-verifslider=-1;
-showimages(images:any,i:any){
-if(this.verifslider==i){
 
-  for(let img of images){
-
-    let obj = {'i':i,'image':img.url,'thumbImage':img.url,'alt':img.name,'title':img.name};
-    this.imgCollection.splice(this.imgCollection.indexOf(obj),1);
-  }
-  this.verifslider=-1;
-}
-
-else{
-  this.imgCollection=[];
-  this.verifslider=i;
-  console.log(images);
-  for(let img of images){
-    console.log(i.url);
-    this.imgCollection.push({'i':i,'image':img.url,'thumbImage':img.url,'alt':img.name,'title':img.name});
-  }
-}
-
-
-}*/
 
 
 
