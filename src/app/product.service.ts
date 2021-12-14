@@ -43,9 +43,8 @@ export class ProductService {
     return this._http.get<Produit[]>(this.productsUrl+"orderByDate");
   }
 
-  getById(id : number) : Produit{
-    this._http.get<Produit>(this.productsUrl+"retrieve-product/"+id)
-      .subscribe(val => this.p = val);
-    return this.p;
+  getById(id : number) {
+    return this._http.get<Produit>(this.productsUrl+"retrieve-product/"+id)
+
   }
 }

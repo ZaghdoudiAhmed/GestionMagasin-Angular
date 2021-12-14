@@ -22,9 +22,8 @@ export class OneProductComponent implements OnInit {
   ngOnInit(): void {
 
     this.ac.paramMap.subscribe(params =>this.id = (Number(params.get('id')) ))
-    this.product = this.ps.getById(this.id);
+    this.ps.getById(this.id).subscribe(val => this.product = val);;
     console.log(this.product.codeProduit)
-    //this.product = new Produit();
     this.id=0
   }
 
