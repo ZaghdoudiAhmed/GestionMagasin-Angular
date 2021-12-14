@@ -17,7 +17,7 @@ export class DetailProduitComponent implements OnInit {
   dp : DetailProduit= new DetailProduit();
   dpt : DetailProduit= new DetailProduit();
   listpro: string[]=[];
-  p : Produit=new Produit();
+  page: number = 1;
   constructor(private ds : DetailProduitService, private modalService: NgbModal, private router: Router ){ }
 
   ngOnInit(): void {

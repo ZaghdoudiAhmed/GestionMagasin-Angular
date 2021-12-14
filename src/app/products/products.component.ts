@@ -21,10 +21,12 @@ export class ProductsComponent implements OnInit {
   private readonly notif : NotifierService;
   dp : DetailProduit = new DetailProduit();
   list: Produit[] = [];
+  search: String = 'search';
   product: Produit = new Produit();
   index: number;
   width: number = 12;
   productToDelete: Produit = new Produit();
+  page: number = 1;
 
   ngOnInit(): void {
     this.ps.getAllProductsFromDb().subscribe(res => this.list = res);

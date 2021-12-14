@@ -10,6 +10,7 @@ import {Produit} from "./produit";
 export class ProductService {
 
   productsUrl: string ="http://localhost:4200/api/SpringMVC/servlet/product/";
+  p : Produit = new Produit();
   constructor(private _http: HttpClient) { }
   httpOptions = {
     headers: new HttpHeaders({
@@ -40,5 +41,11 @@ export class ProductService {
 
   sortByNewest(): Observable<Produit[]>{
     return this._http.get<Produit[]>(this.productsUrl+"orderByDate");
+  }
+
+  getById(id : number) : Produit{
+    this._http.get<Produit>(this.productsUrl+"retrieve-product/"+id)
+      .subscribe(val => this.p = val);
+    return this.p;
   }
 }

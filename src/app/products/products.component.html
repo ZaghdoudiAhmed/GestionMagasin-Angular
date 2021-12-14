@@ -1,7 +1,7 @@
 <div class="header">
   <h2>Product management</h2>
   <form>
-    <input class="form-control" type="text" placeholder="Search">
+    <input class="form-control" type="text" name="s" ngModel #s="ngModel" placeholder="{{search}}" [(ngModel)]="search">
   </form>
 </div>
 <div class="row">
@@ -37,31 +37,32 @@
         </th>
       </tr>
       </thead>
-      <tbody>
-      <tr *ngFor="let p of list; let i=index">
-        <th scope="row">{{i+1}}</th>
-        <td>{{p.codeProduit}}</td>
-        <td>{{p.libelleProduit}}</td>
-        <td>{{p.prixUnitaire}}</td>
-        <td>
-          <button class="btn btn-sm btn-info" *ngIf="p.detailproduit.categorieProduit=='quincaillerie'"(click)="resize(p)" title="info detail">
-              {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
-            </button>
-            <button class="btn btn-sm btn-warning" *ngIf="p.detailproduit.categorieProduit=='alimentaire'"(click)="resize(p)" title="info detail">
-              {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
-            </button>
-            <button class="btn btn-sm btn-success" *ngIf="p.detailproduit.categorieProduit=='electromenager'" (click)="resize(p)" title="info detail">
-              {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
-            </button>
-        </td>
-        <td>
-          <button class="button btn btn-outline-warning mx-1" (click)="setProductToDelete(p,i);open(UpdateContent)"><i class="bi bi-gear-fill"></i></button>
-          <button class="button btn btn-outline-danger mx-1" (click)="setProductToDelete(p,i); open(confirm)"><i class="bi bi-x-circle"></i></button>
-        </td>
+      <tbody *ngFor="let p of list | paginate: { itemsPerPage: 3, currentPage: page }; let i=index ">
+      <tr *ngIf="(p.codeProduit.toString().toUpperCase().startsWith(search.toUpperCase()) || p.libelleProduit.toString().toUpperCase().startsWith(search.toUpperCase()) || p.prixUnitaire.toString().toUpperCase().startsWith(search.toUpperCase()) ) || search=='search'">
+          <th scope="row">{{i+1}}</th>
+          <td>{{p.codeProduit}}</td>
+          <td>{{p.libelleProduit}}</td>
+          <td>{{p.prixUnitaire}}</td>
+          <td>
+            <button class="btn btn-sm btn-info" *ngIf="p.detailproduit.categorieProduit=='quincaillerie'"(click)="resize(p)" title="info detail">
+                {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
+              </button>
+              <button class="btn btn-sm btn-warning" *ngIf="p.detailproduit.categorieProduit=='alimentaire'"(click)="resize(p)" title="info detail">
+                {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
+              </button>
+              <button class="btn btn-sm btn-success" *ngIf="p.detailproduit.categorieProduit=='electromenager'" (click)="resize(p)" title="info detail">
+                {{p.detailproduit.categorieProduit}} <i class="bi bi-info-circle"></i>
+              </button>
+          </td>
+          <td>
+            <button class="button btn btn-outline-warning mx-1" (click)="setProductToDelete(p,i);open(UpdateContent)"><i class="bi bi-gear-fill"></i></button>
+            <button class="button btn btn-outline-danger mx-1" (click)="setProductToDelete(p,i); open(confirm)"><i class="bi bi-x-circle"></i></button>
+          </td>
       </tr>
 
       </tbody>
     </table>
+       <pagination-controls (pageChange)="page = $event"></pagination-controls>
      </div>
     <button class="button btn btn-outline-primary my-3" (click)="open(content)">
       <span class="icon"><i class="bi bi-plus-circle"></i></span>

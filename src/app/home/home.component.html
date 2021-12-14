@@ -10,6 +10,8 @@
           <p class="cat_prod">{{p.detailproduit.categorieProduit}}</p>
 
         <button class="btn btn-primary" (click)="addToCart(p)"><i class="bi bi-cart3"></i> &nbsp; Add to cart</button>
+
+       <a [routerLink]="['/product',p.idProduit]"><i class="bi bi-info-circle-fill mx-3" style="cursor: pointer" ></i></a>
       </div>
     </div>
     <!--

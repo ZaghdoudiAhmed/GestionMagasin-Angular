@@ -14,6 +14,8 @@ import { DetailProduitComponent } from './detail-produit/detail-produit.componen
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NotifierModule} from 'angular-notifier';
 import { CartComponent } from './cart/cart.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { OneProductComponent } from './one-product/one-product.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { CartComponent } from './cart/cart.component';
     FactureComponent,
     ProductsComponent,
     DetailProduitComponent,
-    CartComponent
+    CartComponent,
+    OneProductComponent,
   ],
     imports: [
         BrowserModule,
@@ -32,7 +35,8 @@ import { CartComponent } from './cart/cart.component';
         HttpClientModule,
         FormsModule,
         NgbModule,
-        NotifierModule
+        NotifierModule,
+        NgxPaginationModule
     ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,25 @@
+<div class="row my-3">
+    <div class="card col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Produit : {{product.codeProduit}} {{product.libelleProduit}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{product.prixUnitaire |currency}}</h6>
+        <p class="card-text">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam autem consequatur distinctio dolor ducimus in ipsa laudantium,
+          minima molestiae mollitia nisi nobis nostrum odio qui quia reprehenderit sed sunt veniam.
+        </p>
+      </div>
+    </div>
+
+  <div class="card col-md-3 mx-4">
+    <img class="card-img-top" src="../../assets/produit.jpeg" alt="product">
+    <div class="card-body">
+      <p>Libelle du produit : <b>{{product.libelleProduit}}</b>
+      </p>
+    </div>
+    <div class="card-footer text-center">
+      <button class="btn btn-primary"><i class="bi bi-cart3"></i> &nbsp; Add to cart</button><br>
+      <ngb-rating></ngb-rating>
+    </div>
+  </div>
+</div>
+

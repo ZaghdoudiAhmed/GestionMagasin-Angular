@@ -12,7 +12,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let d of list; let i=index">
+  <tr *ngFor="let d of list | paginate: { itemsPerPage: 3, currentPage: page }; let i=index">
     <th scope="row">{{i+1}}</th>
     <td>{{d.dateCreation}}</td>
     <td>{{d.dateDerniereModification}}</td>
@@ -20,7 +20,7 @@
   </tr>
   </tbody>
 </table>
-
+<pagination-controls (pageChange)="page = $event"></pagination-controls>
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Add product</h4>
